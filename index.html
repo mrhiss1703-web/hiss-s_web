@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Giới thiệu bản thân | Trang doanh nghiệp</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #080a0f;
+      --surface: rgba(15, 18, 27, 0.92);
+      --surface-strong: rgba(10, 12, 18, 0.98);
+      --text: #eef0f4;
+      --muted: #9ea3b0;
+      --accent: #b0b3bb;
+      --accent-soft: rgba(176, 179, 187, 0.12);
+      --border: rgba(255, 255, 255, 0.06);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: linear-gradient(180deg, #07080d 0%, #090a11 100%);
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 2rem));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(18px);
+      background: rgba(10, 12, 18, 0.92);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 1rem 0;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.1rem;
+      flex-wrap: wrap;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: inherit;
+      transition: color 220ms ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .hero {
+      min-height: calc(100vh - 88px);
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      align-items: center;
+      gap: 2rem;
+      padding: 4rem 0 3rem;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+      padding: 0.55rem 0.9rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.04);
+      color: var(--accent);
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 4vw, 4.6rem);
+      line-height: 0.98;
+      margin-bottom: 1rem;
+      word-break: keep-all;
+    }
+
+    .hero p {
+      max-width: 44rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      font-size: 1.05rem;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .button, .button-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 3.1rem;
+      padding: 0 1.5rem;
+      border-radius: 999px;
+      font-weight: 600;
+      transition: transform 240ms ease, box-shadow 240ms ease, background-color 240ms ease;
+      text-decoration: none;
+    }
+
+    .button {
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .button-secondary {
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .button:hover, .button-secondary:hover {
+      transform: translateY(-2px);
+    }
+
+    .topbar.scrolled {
+      background: rgba(10, 12, 18, 0.98);
+      box-shadow: 0 10px 32px rgba(0, 0, 0, 0.2);
+    }
+
+    .feature-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      font-size: 0.85rem;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .stat {
+      padding: 1.25rem 1.3rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 1.25rem;
+      background: rgba(255,255,255,0.03);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.4rem;
+      margin-bottom: 0.35rem;
+      color: #fff;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .hero-image {
+      display: grid;
+      place-items: center;
+    }
+
+    .image-frame {
+      width: min(420px, 100%);
+      border-radius: 2rem;
+      padding: 1.25rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 20px 45px rgba(0,0,0,0.24);
+      transition: transform 360ms ease;
+    }
+
+    .image-frame:hover {
+      transform: translateY(-4px);
+    }
+
+    .image-frame img {
+      border-radius: 1.75rem;
+      object-fit: cover;
+      aspect-ratio: 1 / 1;
+      width: 100%;
+    }
+
+    .section {
+      padding: 5rem 0;
+      position: relative;
+    }
+
+    .section-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.8rem;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+    }
+
+    .section h2 {
+      font-size: clamp(2.3rem, 3vw, 3.4rem);
+      margin-bottom: 1rem;
+      word-break: keep-all;
+    }
+
+    .section p {
+      max-width: 720px;
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.3rem;
+    }
+
+    .card {
+      padding: 1.7rem;
+      border-radius: 1.5rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: transform 260ms ease, border-color 260ms ease, box-shadow 260ms ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(255,255,255,0.14);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.24);
+    }
+
+    .card h3 {
+      margin-bottom: 0.9rem;
+      font-size: 1.25rem;
+    }
+
+    .card p {
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .highlight {
+      color: var(--text);
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .split .panel {
+      padding: 2rem;
+      border-radius: 1.5rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .feature-list {
+      list-style: none;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.9rem;
+      color: var(--muted);
+    }
+
+    .feature-list strong {
+      display: inline-block;
+      min-width: 6rem;
+      color: #fff;
+    }
+
+    .contact-card {
+      display: grid;
+      gap: 1rem;
+      padding: 2rem;
+      border-radius: 1.75rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .contact-card p {
+      margin: 0;
+    }
+
+    .contact-card a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .contact-card .quick-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .contact-card .quick-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.55rem 1rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      transition: transform 180ms ease, background 180ms ease;
+    }
+
+    .contact-card .quick-links a:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.12);
+    }
+
+    .price-grid, .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.3rem;
+    }
+
+    .process-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 1rem;
+      counter-reset: step;
+    }
+
+    .process-list li {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      padding: 1.3rem;
+      border-radius: 1.35rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .process-list li::before {
+      content: counter(step);
+      counter-increment: step;
+      width: 2.4rem;
+      height: 2.4rem;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,0.1);
+      color: var(--text);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .process-list li div {
+      display: grid;
+      gap: 0.35rem;
+    }
+
+    .process-list li p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .process-list li > div {
+      display: grid;
+      gap: 0.35rem;
+    }
+
+    .process-list li strong {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .faq-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .faq-list li {
+      padding: 1.4rem 1.5rem;
+      border-radius: 1.4rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-list h4 {
+      margin-bottom: 0.8rem;
+      font-size: 1.05rem;
+    }
+
+    .floating-chat {
+      position: fixed;
+      right: 1.5rem;
+      bottom: 1.5rem;
+      z-index: 30;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.95rem 1.2rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: var(--text);
+      text-decoration: none;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.22);
+      transition: transform 220ms ease, background 220ms ease;
+    }
+
+    .floating-chat:hover {
+      transform: translateY(-4px);
+      background: rgba(255,255,255,0.16);
+    }
+
+    .footer {
+      padding: 3rem 0 2rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    .footer a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 220ms ease;
+    }
+
+    .footer a:hover {
+      color: var(--text);
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+
+    .visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 960px) {
+      .hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .hero-grid, .cards, .split {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        padding: 3.5rem 0;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav-links {
+        justify-content: center;
+      }
+
+      .topbar {
+        padding: 0.9rem 0;
+      }
+
+      .hero h1 {
+        font-size: 2.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container">
+      <nav>
+        <div class="brand">GIỚI THIỆU</div>
+        <div class="nav-links">
+          <a href="#about">Về tôi</a>
+          <a href="#portfolio">Dự án</a>
+          <a href="#services">Dịch vụ</a>
+          <a href="#pricing">Báo giá</a>
+          <a href="#faq">FAQ</a>
+          <a href="#contact">Liên hệ</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-copy fade-in visible">
+        <span class="eyebrow">Website chuyên nghiệp giá sinh viên</span>
+        <h1>Thiết kế website giới thiệu chuyên nghiệp</h1>
+        <p>Landing page responsive, tải nhanh và hỗ trợ bảo trì lâu dài. Hoàn thành trong 3-7 ngày, phù hợp cá nhân, startup và dự án nhỏ.</p>
+        <div class="actions">
+          <a class="button" href="#pricing">Xem báo giá</a>
+          <a class="button-secondary" href="#contact">Nhận tư vấn</a>
+        </div>
+
+        <div class="hero-grid">
+          <div class="stat">
+            <strong>6+</strong>
+            <span>Dự án học tập</span>
+          </div>
+          <div class="stat">
+            <strong>12+</strong>
+            <span>Trang đã thiết kế</span>
+          </div>
+          <div class="stat">
+            <strong>24h</strong>
+            <span>Phản hồi trung bình</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-image fade-in visible" style="transition-delay: 120ms;">
+        <div class="image-frame">
+          <img src="1785778113971_2158756089354811450_7738196954461640876_e2d355e4e75a5635da4a4618dc2b739a.jpg" alt="Ảnh cá nhân" />
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section fade-in">
+      <span class="section-title">Giới thiệu</span>
+      <h2>Sinh viên Kỹ thuật phần mềm, phát triển website thực tế</h2>
+      <p>Bạn cần website giới thiệu cá nhân, startup hoặc dự án nhỏ với chi phí sinh viên và hỗ trợ bảo trì lâu dài? Tôi thiết kế trang nhanh gọn, responsive và hỗ trợ cập nhật sau bàn giao.</p>
+      <div class="split">
+        <div class="panel">
+          <p><strong>Phong cách:</strong> tối giản, chuyên nghiệp và tập trung vào chuyển đổi khách hàng.</p>
+          <p><strong>Hỗ trợ:</strong> xây website giới thiệu, triển khai landing page, sửa lỗi và bảo trì website với chi phí duy trì hợp lý.</p>
+        </div>
+        <div class="panel">
+          <ul class="feature-list">
+            <li><strong>Giá sinh viên</strong> Thiết kế website từ 0-300k, phù hợp ngân sách học sinh/sinh viên.</li>
+            <li><strong>Bàn giao source</strong> Đầy đủ mã nguồn, dễ mở rộng sau này.</li>
+            <li><strong>Hỗ trợ</strong> Tư vấn, cập nhật và sửa lỗi sau khi bàn giao.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="portfolio" class="section fade-in">
+      <span class="section-title">Dự án tiêu biểu</span>
+      <h2>Một số website học tập và demo</h2>
+      <p>Đây là những trang đã thiết kế để thể hiện khả năng giao diện responsive, bố cục rõ ràng và trải nghiệm người dùng tối ưu.</p>
+      <div class="cards">
+        <article class="card">
+          <h3>Website phòng khám</h3>
+          <p>HTML, CSS, JavaScript - giao diện chuyên nghiệp cho dịch vụ y tế.</p>
+          <a class="button-secondary" href="#contact">Xem demo</a>
+        </article>
+        <article class="card">
+          <h3>Website quán cafe</h3>
+          <p>Landing page responsive cho quán cafe nhỏ, thân thiện với mobile.</p>
+          <a class="button-secondary" href="#contact">Xem demo</a>
+        </article>
+        <article class="card">
+          <h3>Portfolio cá nhân</h3>
+          <p>Trang demo profile với nội dung dịch vụ và thông tin liên hệ nổi bật.</p>
+          <a class="button-secondary" href="#contact">Xem demo</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="services" class="section fade-in">
+      <span class="section-title">Dịch vụ</span>
+      <h2>Dịch vụ phù hợp cho cá nhân và doanh nghiệp nhỏ</h2>
+      <p>Thiết kế website giới thiệu, bảo trì kỹ thuật và chỉnh sửa nội dung đều được phục vụ với chi phí hợp lý.</p>
+      <div class="cards">
+        <article class="card">
+          <h3>Thiết kế website</h3>
+          <p>Xây dựng website giới thiệu, landing page hoặc trang dịch vụ dễ dùng, responsive và chuyên nghiệp.</p>
+        </article>
+        <article class="card">
+          <h3>Bảo trì website</h3>
+          <p>Sửa lỗi, cập nhật nội dung và bảo trì kỹ thuật để website luôn hoạt động ổn định.</p>
+        </article>
+        <article class="card">
+          <h3>Chỉnh sửa theo yêu cầu</h3>
+          <p>Thay đổi nội dung, hình ảnh, cấu trúc trang theo phản hồi để tăng hiệu quả chuyển đổi.</p>
+        </article>
+      </div>
+      <div class="trust-grid" style="margin-top:2rem;">
+        <article class="card">
+          <h3>Giá phù hợp sinh viên</h3>
+          <p>Ưu tiên chi phí nhỏ để hợp tác, kể cả miễn phí thiết kế để lấy kinh nghiệm.</p>
+        </article>
+        <article class="card">
+          <h3>Bàn giao source</h3>
+          <p>Giao đầy đủ mã nguồn, giúp đối tác dễ dàng mở rộng hoặc chuyển giao sau này.</p>
+        </article>
+        <article class="card">
+          <h3>Hỗ trợ lâu dài</h3>
+          <p>Cập nhật, sửa lỗi và bảo trì website sau khi bàn giao với chi phí duy trì rõ ràng.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="process" class="section fade-in">
+      <span class="section-title">Quy trình</span>
+      <h2>Cách tôi triển khai dự án web</h2>
+      <p>Một quy trình đơn giản, rõ ràng giúp đối tác yên tâm và theo dõi tiến độ dễ dàng.</p>
+      <ul class="process-list">
+        <li><div><strong>Trao đổi nhu cầu</strong><p>Thu thập yêu cầu, mục tiêu và nội dung website.</p></div></li>
+        <li><div><strong>Thiết kế demo</strong><p>Chuẩn bị giao diện, layout và demo ban đầu.</p></div></li>
+        <li><div><strong>Chỉnh sửa</strong><p>Hoàn thiện theo phản hồi và nhu cầu của đối tác.</p></div></li>
+        <li><div><strong>Bàn giao source</strong><p>Giao mã nguồn, hướng dẫn sử dụng và cài đặt.</p></div></li>
+        <li><div><strong>Hỗ trợ 1 tuần</strong><p>Hỗ trợ sửa đổi, update miễn phí trong 1 tuần nếu chưa ưng ý.</p></div></li>
+      </ul>
+    </section>
+
+    <section id="pricing" class="section fade-in">
+      <span class="section-title">Báo giá</span>
+      <h2>Giá thiết kế website Free / 200-300k</h2>
+      <p>Gói giới thiệu cơ bản Free. Gói quán cafe/doanh nghiệp nhỏ 200-300k với chức năng và quản lý database cơ bản. Hỗ trợ sửa đổi miễn phí trong tuần đầu nếu chưa ưng ý.</p>
+      <div class="price-grid">
+        <article class="card">
+          <h3>Gói Cơ bản</h3>
+          <p>Website giới thiệu 1 trang, responsive, phù hợp cá nhân và portfolio.</p>
+          <p><strong>Free</strong></p>
+        </article>
+        <article class="card">
+          <h3>Gói Quán cafe / doanh nghiệp nhỏ</h3>
+          <p>Website 3-5 trang, responsive, form liên hệ, quản lý database cơ bản.</p>
+          <p><strong>200 - 300k</strong></p>
+        </article>
+        <article class="card">
+          <h3>Gói Theo yêu cầu</h3>
+          <p>Thiết kế theo nhu cầu đặc thù, tính năng mở rộng hoặc dự án lớn hơn.</p>
+          <p><strong>Liên hệ</strong></p>
+        </article>
+      </div>
+    </section>
+
+    <section id="faq" class="section fade-in">
+      <span class="section-title">FAQ</span>
+      <h2>Câu hỏi thường gặp</h2>
+      <ul class="faq-list">
+        <li>
+          <h4>Bao lâu hoàn thành?</h4>
+          <p>Thông thường 3-7 ngày, tùy yêu cầu nội dung và số trang.</p>
+        </li>
+        <li>
+          <h4>Có chỉnh sửa không?</h4>
+          <p>Có, bạn có thể yêu cầu chỉnh sửa sau khi xem demo ban đầu.</p>
+        </li>
+        <li>
+          <h4>Có bảo hành không?</h4>
+          <p>Có, tôi hỗ trợ sửa lỗi và bảo trì trong 1 tuần sau khi bàn giao.</p>
+        </li>
+        <li>
+          <h4>Có bàn giao source không?</h4>
+          <p>Có, toàn bộ mã nguồn sẽ được giao đầy đủ cho bạn sau khi hoàn thành.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section id="contact" class="section fade-in">
+      <span class="section-title">Liên hệ</span>
+      <h2>Hợp tác cùng tôi</h2>
+      <p>Nếu bạn muốn có website riêng với chi phí hợp lý và hỗ trợ lâu dài, hãy liên hệ để tôi tư vấn chi tiết.</p>
+      <div class="contact-card">
+        <p><strong>Email:</strong> <a href="mailto:mrhiss1703@gmail.com">mrhiss1703@gmail.com</a></p>
+        <p><strong>Điện thoại:</strong> <a href="tel:+84332311703">+84 332 311 703</a></p>
+        <p><strong>Địa chỉ:</strong> Cần Thơ, Việt Nam</p>
+        <p><strong>Liên kết nhanh:</strong></p>
+        <div class="quick-links">
+          <a href="https://zalo.me/0332311703" target="_blank">Zalo</a>
+          <a href="https://facebook.com/mrhiss1703" target="_blank">Facebook</a>
+        </div>
+        <p><strong>Ưu đãi:</strong> Gói cơ bản free, gói quán cafe/doanh nghiệp nhỏ 200-300k. Hỗ trợ sửa đổi và update miễn phí trong 1 tuần đầu nếu chưa ưng ý.</p>
+        <a class="button" href="https://zalo.me/0332311703">Chat Zalo ngay</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand">HISS WEB</div>
+        <p>Thiết kế website giới thiệu, landing page và hỗ trợ bảo trì với chi phí sinh viên.</p>
+      </div>
+      <div>
+        <h4>Menu</h4>
+        <p><a href="#about">Về tôi</a></p>
+        <p><a href="#portfolio">Dự án</a></p>
+        <p><a href="#pricing">Báo giá</a></p>
+      </div>
+      <div>
+        <h4>Liên hệ</h4>
+        <p><a href="mailto:mrhiss1703@gmail.com">mrhiss1703@gmail.com</a></p>
+        <p><a href="tel:+84332311703">+84 332 311 703</a></p>
+        <p><a href="https://github.com/mrhiss1703">Github</a></p>
+      </div>
+    </div>
+    <div class="container" style="margin-top:1.5rem; text-align:center;">© 2026 Đặng Huỳnh Khải Minh (Hiss). All rights reserved.</div>
+  </footer>
+  <a class="floating-chat" href="https://zalo.me/0332311703" target="_blank">💬 Chat Zalo</a>
+
+  <script>
+    const elements = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.25,
+    });
+
+    elements.forEach((element, index) => {
+      element.style.transitionDelay = `${index * 80}ms`;
+      observer.observe(element);
+    });
+
+    const topbar = document.querySelector('.topbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 40) {
+        topbar.classList.add('scrolled');
+      } else {
+        topbar.classList.remove('scrolled');
+      }
+    });
+  </script>
+</body>
+</html>
