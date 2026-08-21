@@ -36,6 +36,8 @@
       overflow-x: hidden;
     }
 
+    section { scroll-margin-top: 6rem; }
+
     img {
       max-width: 100%;
       display: block;
@@ -86,6 +88,32 @@
     .nav-links a:hover {
       color: var(--text);
     }
+
+    .menu-toggle {
+      display: none;
+      width: 2.75rem;
+      height: 2.75rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 0.85rem;
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .menu-toggle span {
+      width: 1.2rem;
+      height: 2px;
+      border-radius: 999px;
+      background: currentColor;
+      transition: transform 200ms ease;
+    }
+
+    .menu-toggle[aria-expanded="true"] span:first-child { transform: translateY(0.25rem) rotate(45deg); }
+    .menu-toggle[aria-expanded="true"] span:last-child { transform: translateY(-0.25rem) rotate(-45deg); }
 
     .hero {
       min-height: calc(100vh - 88px);
@@ -284,6 +312,74 @@
     .card p {
       color: var(--muted);
       line-height: 1.8;
+    }
+
+    .project-list {
+      display: grid;
+      gap: 2rem;
+    }
+
+    .project-card {
+      overflow: hidden;
+      padding: 1.5rem;
+      border-radius: 1.5rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .project-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .project-header h3 {
+      font-size: 1.35rem;
+    }
+
+    .project-gallery {
+      width: 100%;
+      overflow: hidden;
+      border-radius: 1rem;
+      -webkit-mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
+      mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
+    }
+
+    .project-gallery-track {
+      display: flex;
+      width: max-content;
+      animation: project-scroll 38s linear infinite;
+      will-change: transform;
+    }
+
+    .project-gallery-set {
+      display: flex;
+      gap: 0.75rem;
+      padding-right: 0.75rem;
+    }
+
+    .project-gallery img {
+      width: clamp(260px, 38vw, 460px);
+      aspect-ratio: 16 / 9;
+      flex: 0 0 auto;
+      object-fit: cover;
+      border-radius: 0.9rem;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .project-card:nth-child(even) .project-gallery-track {
+      animation-direction: reverse;
+    }
+
+    .project-gallery:hover .project-gallery-track,
+    .project-gallery:focus-within .project-gallery-track {
+      animation-play-state: paused;
+    }
+
+    @keyframes project-scroll {
+      to { transform: translateX(-50%); }
     }
 
     .highlight {
@@ -506,6 +602,7 @@
       .hero {
         grid-template-columns: 1fr;
         min-height: auto;
+        gap: 2.5rem;
       }
 
       .hero-grid, .cards, .split, .price-grid, .trust-grid {
@@ -515,20 +612,91 @@
       .section {
         padding: 3.5rem 0;
       }
+
+      .hero-image { grid-row: 1; }
+      .image-frame { width: min(360px, 78vw); }
     }
 
-    @media (max-width: 640px) {
+    @media (max-width: 720px) {
+      .container { width: min(100% - 1.25rem, 1180px); }
+      .topbar { padding: 0.65rem 0; }
+      nav { position: relative; }
+      .brand { order: 1; font-size: 0.9rem; letter-spacing: 0.1em; }
+      .menu-toggle { order: 2; display: inline-flex; flex-shrink: 0; }
+
       .nav-links {
-        justify-content: center;
+        order: 3;
+        position: absolute;
+        top: calc(100% + 0.7rem);
+        left: 0;
+        right: 0;
+        display: grid;
+        gap: 0.2rem;
+        padding: 0.6rem;
+        border: 1px solid rgba(255,255,255,0.09);
+        border-radius: 1rem;
+        background: rgba(10, 12, 18, 0.98);
+        box-shadow: 0 18px 40px rgba(0,0,0,0.38);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-0.5rem);
+        transition: opacity 180ms ease, transform 180ms ease, visibility 180ms ease;
       }
 
-      .topbar {
-        padding: 0.9rem 0;
-      }
+      .nav-links.open { opacity: 1; visibility: visible; transform: translateY(0); }
+      .nav-links a { min-height: 2.75rem; display: flex; align-items: center; padding: 0 0.85rem; border-radius: 0.7rem; }
+      .nav-links a:hover, .nav-links a:focus-visible { background: rgba(255,255,255,0.06); }
+      .hero { padding: 2rem 0 2.5rem; gap: 2rem; }
+      .hero-copy { text-align: center; }
+      .eyebrow { margin-bottom: 0.85rem; font-size: 0.76rem; letter-spacing: 0.05em; }
 
       .hero h1 {
-        font-size: 2.8rem;
+        font-size: clamp(2.15rem, 10vw, 3rem);
+        line-height: 1.06;
       }
+
+      .hero p { margin-bottom: 1.5rem; font-size: 0.98rem; }
+      .actions { justify-content: center; gap: 0.7rem; margin-bottom: 1.5rem; }
+      .button, .button-secondary { min-height: 3rem; padding: 0 1.15rem; }
+      .hero-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.55rem; }
+      .stat { padding: 0.9rem 0.4rem; border-radius: 1rem; }
+      .stat strong { font-size: 1.2rem; }
+      .stat span { font-size: 0.75rem; line-height: 1.35; }
+      .image-frame { width: min(280px, 72vw); padding: 0.75rem; border-radius: 1.5rem; }
+      .image-frame img { border-radius: 1.15rem; }
+      .section { padding: 2.8rem 0; }
+      .section-title { margin-bottom: 1rem; font-size: 0.82rem; }
+      .section h2 { font-size: clamp(1.8rem, 8vw, 2.4rem); line-height: 1.16; }
+      .section p { margin-bottom: 1.4rem; }
+      .cards, .price-grid, .trust-grid { gap: 0.85rem; }
+      .card, .split .panel, .contact-card { padding: 1.25rem; border-radius: 1.2rem; }
+      .project-list { gap: 1.25rem; }
+      .project-card { padding: 1rem; border-radius: 1.2rem; }
+      .project-header { align-items: stretch; flex-direction: column; margin-bottom: 1rem; }
+      .project-header .button-secondary { width: 100%; }
+      .project-gallery { overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none; mask-image: none; -webkit-mask-image: none; }
+      .project-gallery::-webkit-scrollbar { display: none; }
+      .project-gallery img { width: min(78vw, 350px); scroll-snap-align: start; }
+      .card:hover, .image-frame:hover { transform: none; }
+      .feature-list li { display: grid; gap: 0.25rem; }
+      .process-list li, .faq-list li { padding: 1.1rem; }
+      .contact-card a:not(.button) { overflow-wrap: anywhere; }
+      .contact-card .button { width: 100%; }
+      .footer { padding: 2.5rem 0 5rem; }
+      .footer-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+      .floating-chat { right: max(0.75rem, env(safe-area-inset-right)); bottom: max(0.75rem, env(safe-area-inset-bottom)); padding: 0.75rem 0.95rem; font-size: 0.88rem; }
+    }
+
+    @media (max-width: 380px) {
+      .actions { display: grid; }
+      .actions a { width: 100%; }
+      .hero-grid { grid-template-columns: 1fr; }
+      .stat { display: grid; grid-template-columns: 3.5rem 1fr; align-items: center; text-align: left; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+      .project-gallery-track { animation: none; }
     }
   </style>
 </head>
@@ -536,8 +704,12 @@
   <header class="topbar">
     <div class="container">
       <nav>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Mở menu">
+          <span></span>
+          <span></span>
+        </button>
         <div class="brand">GIỚI THIỆU</div>
-        <div class="nav-links">
+        <div class="nav-links" id="primary-navigation">
           <a href="#about">Về tôi</a>
           <a href="#portfolio">Dự án</a>
           <a href="#services">Dịch vụ</a>
@@ -604,23 +776,29 @@
 
     <section id="portfolio" class="section fade-in">
       <span class="section-title">Dự án tiêu biểu</span>
-      <h2>Một số website học tập và demo</h2>
+      <h2>Các dự án website đã hoàn thành</h2>
       <p>Đây là những trang đã thiết kế để thể hiện khả năng giao diện responsive, bố cục rõ ràng và trải nghiệm người dùng tối ưu.</p>
-      <div class="cards">
-        <article class="card">
-          <h3>Website phòng khám</h3>
-          <p>HTML, CSS, JavaScript - giao diện chuyên nghiệp cho dịch vụ y tế.</p>
-          <a class="button-secondary" href="#contact">Xem demo</a>
+      <div class="project-list">
+        <article class="project-card">
+          <div class="project-header">
+            <h3>Skilllink Event</h3>
+            <a class="button-secondary" href="https://mrhiss1703-web.github.io/skilllink-event/" target="_blank" rel="noopener noreferrer">Xem trực tiếp</a>
+          </div>
+          <div class="project-gallery" data-project="skilllink" aria-label="Hình ảnh dự án Skilllink Event"></div>
         </article>
-        <article class="card">
-          <h3>Website quán cafe</h3>
-          <p>Landing page responsive cho quán cafe nhỏ, thân thiện với mobile.</p>
-          <a class="button-secondary" href="#contact">Xem demo</a>
+        <article class="project-card">
+          <div class="project-header">
+            <h3>Vĩnh Long Marathon</h3>
+            <a class="button-secondary" href="https://vinh-long-marathon.vercel.app/" target="_blank" rel="noopener noreferrer">Xem trực tiếp</a>
+          </div>
+          <div class="project-gallery" data-project="marathon" aria-label="Hình ảnh dự án Vĩnh Long Marathon"></div>
         </article>
-        <article class="card">
-          <h3>Portfolio cá nhân</h3>
-          <p>Trang demo profile với nội dung dịch vụ và thông tin liên hệ nổi bật.</p>
-          <a class="button-secondary" href="#contact">Xem demo</a>
+        <article class="project-card">
+          <div class="project-header">
+            <h3>Skilllink Job</h3>
+            <a class="button-secondary" href="https://mrhiss1703-web.github.io/skilllink-job/" target="_blank" rel="noopener noreferrer">Xem trực tiếp</a>
+          </div>
+          <div class="project-gallery" data-project="job" aria-label="Hình ảnh dự án Skilllink Job"></div>
         </article>
       </div>
     </section>
@@ -761,6 +939,57 @@
   <a class="floating-chat" href="https://zalo.me/0332311703" target="_blank">💬 Chat Zalo</a>
 
   <script>
+    const projectImages = {
+      skilllink: [
+        'Đã làm_Skillink/1787320949000_2158756089354811450_7808540719867896210_c59cfc09494712649eeeb501958c204a.jpg',
+        'Đã làm_Skillink/1787320962522_2158756089354811450_7808540719867896210_ac7bca694166a4f2af80492456b4d213.jpg',
+        'Đã làm_Skillink/1787320971731_2158756089354811450_7808540719867896210_191c9d4e5d8173f5657fb4e2a491b80e.jpg',
+        'Đã làm_Skillink/1787320982530_2158756089354811450_7808540719867896210_1e70cce015ae167b85853459a1d1c0ce.jpg',
+        'Đã làm_Skillink/1787320991238_2158756089354811450_7808540719867896210_28cd0fbcda167c36de980f6508bd2f22.jpg',
+        'Đã làm_Skillink/1787321001717_2158756089354811450_7808540719867896210_724e62a63000e34444467e3779d0363f.jpg',
+        'Đã làm_Skillink/1787321028163_2158756089354811450_7808540719867896210_7277c5a59e0890c90d07088640f29d82.jpg',
+        'Đã làm_Skillink/1787321037372_2158756089354811450_7808540719867896210_36ae2116a24a660e4921795c80bcf045.jpg'
+      ],
+      marathon: [
+        'Đã làm_Marathon/1787321111486_2158756089354811450_7808540719867896210_90d430a9c53915f287151cdac37c3e85.jpg',
+        'Đã làm_Marathon/1787321124818_2158756089354811450_7808540719867896210_4f10c9e677f5036ddec3094aa389a823.jpg',
+        'Đã làm_Marathon/1787321133236_2158756089354811450_7808540719867896210_317d0452ec61a3001a3be1f40f1cde6e.jpg',
+        'Đã làm_Marathon/1787321146125_2158756089354811450_7808540719867896210_50392e2d414c948602c83e0d70f596c2.jpg',
+        'Đã làm_Marathon/1787321157324_2158756089354811450_7808540719867896210_4bf4fab418f9148c581d343af1272796.jpg',
+        'Đã làm_Marathon/1787321172410_2158756089354811450_7808540719867896210_8af6c736ebd71caa6f717b4c9dec2fac.jpg'
+      ],
+      job: [
+        'Đã Làm_Job/1787320808940_2158756089354811450_7808540719867896210_02cd3e945973f301ac690c28e4181218.jpg',
+        'Đã Làm_Job/1787320819719_2158756089354811450_7808540719867896210_04df3051a5f189cdc788394fc2454c12.jpg',
+        'Đã Làm_Job/1787320829132_2158756089354811450_7808540719867896210_992bc23093db62c2e2c46352debb72e2.jpg',
+        'Đã Làm_Job/1787320836804_2158756089354811450_7808540719867896210_af9209ae622d3aaf9464a3e8e649e184.jpg',
+        'Đã Làm_Job/1787320848817_2158756089354811450_7808540719867896210_e5db5e2956cbf55f6a36feca30327521.jpg'
+      ]
+    };
+
+    document.querySelectorAll('.project-gallery').forEach((gallery) => {
+      const images = projectImages[gallery.dataset.project];
+      const track = document.createElement('div');
+      const imageSet = document.createElement('div');
+      track.className = 'project-gallery-track';
+      imageSet.className = 'project-gallery-set';
+
+      images.forEach((source, index) => {
+        const image = document.createElement('img');
+        image.src = source;
+        image.alt = `Ảnh giao diện ${gallery.getAttribute('aria-label').replace('Hình ảnh dự án ', '')} ${index + 1}`;
+        image.loading = 'lazy';
+        image.decoding = 'async';
+        imageSet.appendChild(image);
+      });
+
+      const repeatedSet = imageSet.cloneNode(true);
+      repeatedSet.setAttribute('aria-hidden', 'true');
+      repeatedSet.querySelectorAll('img').forEach((image) => image.alt = '');
+      track.append(imageSet, repeatedSet);
+      gallery.appendChild(track);
+    });
+
     const elements = document.querySelectorAll('.fade-in');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -785,6 +1014,30 @@
       } else {
         topbar.classList.remove('scrolled');
       }
+    });
+
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+
+    const closeMenu = () => {
+      navLinks.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      menuToggle.setAttribute('aria-label', 'Mở menu');
+    };
+
+    menuToggle.addEventListener('click', () => {
+      const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
+      navLinks.classList.toggle('open', !isOpen);
+      menuToggle.setAttribute('aria-expanded', String(!isOpen));
+      menuToggle.setAttribute('aria-label', isOpen ? 'Mở menu' : 'Đóng menu');
+    });
+
+    navLinks.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+    document.addEventListener('click', (event) => {
+      if (!event.target.closest('nav')) closeMenu();
+    });
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 720) closeMenu();
     });
   </script>
 </body>
