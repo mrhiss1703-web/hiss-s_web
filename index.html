@@ -1,1044 +1,528 @@
 <!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Giới thiệu bản thân | Trang doanh nghiệp</title>
-  <style>
-    :root {
-      color-scheme: dark;
-      --bg: #080a0f;
-      --surface: rgba(15, 18, 27, 0.92);
-      --surface-strong: rgba(10, 12, 18, 0.98);
-      --text: #eef0f4;
-      --muted: #9ea3b0;
-      --accent: #b0b3bb;
-      --accent-soft: rgba(176, 179, 187, 0.12);
-      --border: rgba(255, 255, 255, 0.06);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      scroll-behavior: smooth;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html, body {
-      min-height: 100%;
-      background: linear-gradient(180deg, #07080d 0%, #090a11 100%);
-      color: var(--text);
-      line-height: 1.65;
-    }
-
-    body {
-      overflow-x: hidden;
-    }
-
-    section { scroll-margin-top: 6rem; }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    .container {
-      width: min(1180px, calc(100% - 2rem));
-      margin: 0 auto;
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      backdrop-filter: blur(18px);
-      background: rgba(10, 12, 18, 0.92);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      padding: 1rem 0;
-    }
-
-    nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-
-    .brand {
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      color: var(--accent);
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 1.1rem;
-      flex-wrap: wrap;
-      font-size: 0.95rem;
-      color: var(--muted);
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: inherit;
-      transition: color 220ms ease;
-    }
-
-    .nav-links a:hover {
-      color: var(--text);
-    }
-
-    .menu-toggle {
-      display: none;
-      width: 2.75rem;
-      height: 2.75rem;
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 0.85rem;
-      background: rgba(255,255,255,0.05);
-      color: var(--text);
-      cursor: pointer;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 0.3rem;
-    }
-
-    .menu-toggle span {
-      width: 1.2rem;
-      height: 2px;
-      border-radius: 999px;
-      background: currentColor;
-      transition: transform 200ms ease;
-    }
-
-    .menu-toggle[aria-expanded="true"] span:first-child { transform: translateY(0.25rem) rotate(45deg); }
-    .menu-toggle[aria-expanded="true"] span:last-child { transform: translateY(-0.25rem) rotate(-45deg); }
-
-    .hero {
-      min-height: calc(100vh - 88px);
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      align-items: center;
-      gap: 2rem;
-      padding: 4rem 0 3rem;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      margin-bottom: 1rem;
-      padding: 0.55rem 0.9rem;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.04);
-      color: var(--accent);
-      font-size: 0.9rem;
-      letter-spacing: 0.08em;
-    }
-
-    .hero h1 {
-      font-size: clamp(3rem, 4vw, 4.6rem);
-      line-height: 0.98;
-      margin-bottom: 1rem;
-      word-break: keep-all;
-    }
-
-    .hero p {
-      max-width: 44rem;
-      color: var(--muted);
-      margin-bottom: 2rem;
-      font-size: 1.05rem;
-    }
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-
-    .button, .button-secondary {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 3.1rem;
-      padding: 0 1.5rem;
-      border-radius: 999px;
-      font-weight: 600;
-      transition: transform 240ms ease, box-shadow 240ms ease, background-color 240ms ease;
-      text-decoration: none;
-    }
-
-    .button {
-      background: rgba(255,255,255,0.08);
-      color: var(--text);
-      border: 1px solid rgba(255,255,255,0.12);
-    }
-
-    .button-secondary {
-      color: var(--text);
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.04);
-    }
-
-    .button:hover, .button-secondary:hover {
-      transform: translateY(-2px);
-    }
-
-    .topbar.scrolled {
-      background: rgba(10, 12, 18, 0.98);
-      box-shadow: 0 10px 32px rgba(0, 0, 0, 0.2);
-    }
-
-    .feature-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.45rem 0.9rem;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.06);
-      color: var(--text);
-      font-size: 0.85rem;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-
-    .stat {
-      padding: 1.25rem 1.3rem;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 1.25rem;
-      background: rgba(255,255,255,0.03);
-    }
-
-    .stat strong {
-      display: block;
-      font-size: 1.4rem;
-      margin-bottom: 0.35rem;
-      color: #fff;
-    }
-
-    .stat span {
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
-    .hero-image {
-      display: grid;
-      place-items: center;
-    }
-
-    .image-frame {
-      width: min(420px, 100%);
-      border-radius: 2rem;
-      padding: 1.25rem;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 20px 45px rgba(0,0,0,0.24);
-      transition: transform 360ms ease;
-    }
-
-    .image-frame:hover {
-      transform: translateY(-4px);
-    }
-
-    .image-frame img {
-      border-radius: 1.75rem;
-      object-fit: cover;
-      aspect-ratio: 1 / 1;
-      width: 100%;
-    }
-
-    .section {
-      padding: 5rem 0;
-      position: relative;
-    }
-
-    .section-title {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.8rem;
-      margin-bottom: 1.8rem;
-      font-size: 1rem;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--accent);
-    }
-
-    .section h2 {
-      font-size: clamp(2.3rem, 3vw, 3.4rem);
-      margin-bottom: 1rem;
-      word-break: keep-all;
-    }
-
-    .section p {
-      max-width: 720px;
-      color: var(--muted);
-      font-size: 1rem;
-      margin-bottom: 2rem;
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1.3rem;
-    }
-
-    .card {
-      padding: 1.7rem;
-      border-radius: 1.5rem;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
-      transition: transform 260ms ease, border-color 260ms ease, box-shadow 260ms ease;
-      backdrop-filter: blur(10px);
-    }
-
-    .card:hover {
-      transform: translateY(-8px);
-      border-color: rgba(255,255,255,0.14);
-      box-shadow: 0 24px 60px rgba(0,0,0,0.24);
-    }
-
-    .card h3 {
-      margin-bottom: 0.9rem;
-      font-size: 1.25rem;
-    }
-
-    .card p {
-      color: var(--muted);
-      line-height: 1.8;
-    }
-
-    .project-list {
-      display: grid;
-      gap: 2rem;
-    }
-
-    .project-card {
-      overflow: hidden;
-      padding: 1.5rem;
-      border-radius: 1.5rem;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .project-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      margin-bottom: 1.25rem;
-    }
-
-    .project-header h3 {
-      font-size: 1.35rem;
-    }
-
-    .project-gallery {
-      width: 100%;
-      overflow: hidden;
-      border-radius: 1rem;
-      -webkit-mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
-      mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
-    }
-
-    .project-gallery-track {
-      display: flex;
-      width: max-content;
-      animation: project-scroll 38s linear infinite;
-      will-change: transform;
-    }
-
-    .project-gallery-set {
-      display: flex;
-      gap: 0.75rem;
-      padding-right: 0.75rem;
-    }
-
-    .project-gallery img {
-      width: clamp(260px, 38vw, 460px);
-      aspect-ratio: 16 / 9;
-      flex: 0 0 auto;
-      object-fit: cover;
-      border-radius: 0.9rem;
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .project-card:nth-child(even) .project-gallery-track {
-      animation-direction: reverse;
-    }
-
-    .project-gallery:hover .project-gallery-track,
-    .project-gallery:focus-within .project-gallery-track {
-      animation-play-state: paused;
-    }
-
-    @keyframes project-scroll {
-      to { transform: translateX(-50%); }
-    }
-
-    .highlight {
-      color: var(--text);
-    }
-
-    .split {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-      align-items: center;
-    }
-
-    .split .panel {
-      padding: 2rem;
-      border-radius: 1.5rem;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .feature-list {
-      list-style: none;
-      display: grid;
-      gap: 1rem;
-    }
-
-    .feature-list li {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.9rem;
-      color: var(--muted);
-    }
-
-    .feature-list strong {
-      display: inline-block;
-      min-width: 6rem;
-      color: #fff;
-    }
-
-    .contact-card {
-      display: grid;
-      gap: 1rem;
-      padding: 2rem;
-      border-radius: 1.75rem;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .contact-card p {
-      margin: 0;
-    }
-
-    .contact-card a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    .contact-card .quick-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      margin-bottom: 1rem;
-    }
-
-    .contact-card .quick-links a {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.55rem 1rem;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
-      transition: transform 180ms ease, background 180ms ease;
-    }
-
-    .contact-card .quick-links a:hover {
-      transform: translateY(-2px);
-      background: rgba(255,255,255,0.12);
-    }
-
-    .price-grid, .trust-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1.3rem;
-    }
-
-    .process-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: grid;
-      gap: 1rem;
-      counter-reset: step;
-    }
-
-    .process-list li {
-      display: flex;
-      gap: 1rem;
-      align-items: flex-start;
-      padding: 1.3rem;
-      border-radius: 1.35rem;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .process-list li::before {
-      content: counter(step);
-      counter-increment: step;
-      width: 2.4rem;
-      height: 2.4rem;
-      border-radius: 999px;
-      display: grid;
-      place-items: center;
-      background: rgba(255,255,255,0.1);
-      color: var(--text);
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-
-    .process-list li div {
-      display: grid;
-      gap: 0.35rem;
-    }
-
-    .process-list li p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .process-list li > div {
-      display: grid;
-      gap: 0.35rem;
-    }
-
-    .process-list li strong {
-      margin: 0;
-      font-size: 1rem;
-    }
-
-    .faq-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: grid;
-      gap: 1rem;
-    }
-
-    .faq-list li {
-      padding: 1.4rem 1.5rem;
-      border-radius: 1.4rem;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .faq-list h4 {
-      margin-bottom: 0.8rem;
-      font-size: 1.05rem;
-    }
-
-    .floating-chat {
-      position: fixed;
-      right: 1.5rem;
-      bottom: 1.5rem;
-      z-index: 30;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.95rem 1.2rem;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.1);
-      backdrop-filter: blur(14px);
-      border: 1px solid rgba(255,255,255,0.14);
-      color: var(--text);
-      text-decoration: none;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.22);
-      transition: transform 220ms ease, background 220ms ease;
-    }
-
-    .floating-chat:hover {
-      transform: translateY(-4px);
-      background: rgba(255,255,255,0.16);
-    }
-
-    .footer {
-      padding: 3rem 0 2rem;
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1.5rem;
-      align-items: start;
-    }
-
-    .footer a {
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 220ms ease;
-    }
-
-    .footer a:hover {
-      color: var(--text);
-    }
-
-    .fade-in {
-      opacity: 0;
-      transform: translateY(32px);
-      transition: opacity 0.65s ease, transform 0.65s ease;
-    }
-
-    .visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    @media (max-width: 960px) {
-      .hero {
-        grid-template-columns: 1fr;
-        min-height: auto;
-        gap: 2.5rem;
-      }
-
-      .hero-grid, .cards, .split, .price-grid, .trust-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .section {
-        padding: 3.5rem 0;
-      }
-
-      .hero-image { grid-row: 1; }
-      .image-frame { width: min(360px, 78vw); }
-    }
-
-    @media (max-width: 720px) {
-      .container { width: min(100% - 1.25rem, 1180px); }
-      .topbar { padding: 0.65rem 0; }
-      nav { position: relative; }
-      .brand { order: 1; font-size: 0.9rem; letter-spacing: 0.1em; }
-      .menu-toggle { order: 2; display: inline-flex; flex-shrink: 0; }
-
-      .nav-links {
-        order: 3;
-        position: absolute;
-        top: calc(100% + 0.7rem);
-        left: 0;
-        right: 0;
-        display: grid;
-        gap: 0.2rem;
-        padding: 0.6rem;
-        border: 1px solid rgba(255,255,255,0.09);
-        border-radius: 1rem;
-        background: rgba(10, 12, 18, 0.98);
-        box-shadow: 0 18px 40px rgba(0,0,0,0.38);
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(-0.5rem);
-        transition: opacity 180ms ease, transform 180ms ease, visibility 180ms ease;
-      }
-
-      .nav-links.open { opacity: 1; visibility: visible; transform: translateY(0); }
-      .nav-links a { min-height: 2.75rem; display: flex; align-items: center; padding: 0 0.85rem; border-radius: 0.7rem; }
-      .nav-links a:hover, .nav-links a:focus-visible { background: rgba(255,255,255,0.06); }
-      .hero { padding: 2rem 0 2.5rem; gap: 2rem; }
-      .hero-copy { text-align: center; }
-      .eyebrow { margin-bottom: 0.85rem; font-size: 0.76rem; letter-spacing: 0.05em; }
-
-      .hero h1 {
-        font-size: clamp(2.15rem, 10vw, 3rem);
-        line-height: 1.06;
-      }
-
-      .hero p { margin-bottom: 1.5rem; font-size: 0.98rem; }
-      .actions { justify-content: center; gap: 0.7rem; margin-bottom: 1.5rem; }
-      .button, .button-secondary { min-height: 3rem; padding: 0 1.15rem; }
-      .hero-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.55rem; }
-      .stat { padding: 0.9rem 0.4rem; border-radius: 1rem; }
-      .stat strong { font-size: 1.2rem; }
-      .stat span { font-size: 0.75rem; line-height: 1.35; }
-      .image-frame { width: min(280px, 72vw); padding: 0.75rem; border-radius: 1.5rem; }
-      .image-frame img { border-radius: 1.15rem; }
-      .section { padding: 2.8rem 0; }
-      .section-title { margin-bottom: 1rem; font-size: 0.82rem; }
-      .section h2 { font-size: clamp(1.8rem, 8vw, 2.4rem); line-height: 1.16; }
-      .section p { margin-bottom: 1.4rem; }
-      .cards, .price-grid, .trust-grid { gap: 0.85rem; }
-      .card, .split .panel, .contact-card { padding: 1.25rem; border-radius: 1.2rem; }
-      .project-list { gap: 1.25rem; }
-      .project-card { padding: 1rem; border-radius: 1.2rem; }
-      .project-header { align-items: stretch; flex-direction: column; margin-bottom: 1rem; }
-      .project-header .button-secondary { width: 100%; }
-      .project-gallery { overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none; mask-image: none; -webkit-mask-image: none; }
-      .project-gallery::-webkit-scrollbar { display: none; }
-      .project-gallery img { width: min(78vw, 350px); scroll-snap-align: start; }
-      .card:hover, .image-frame:hover { transform: none; }
-      .feature-list li { display: grid; gap: 0.25rem; }
-      .process-list li, .faq-list li { padding: 1.1rem; }
-      .contact-card a:not(.button) { overflow-wrap: anywhere; }
-      .contact-card .button { width: 100%; }
-      .footer { padding: 2.5rem 0 5rem; }
-      .footer-grid { grid-template-columns: 1fr; gap: 1.2rem; }
-      .floating-chat { right: max(0.75rem, env(safe-area-inset-right)); bottom: max(0.75rem, env(safe-area-inset-bottom)); padding: 0.75rem 0.95rem; font-size: 0.88rem; }
-    }
-
-    @media (max-width: 380px) {
-      .actions { display: grid; }
-      .actions a { width: 100%; }
-      .hero-grid { grid-template-columns: 1fr; }
-      .stat { display: grid; grid-template-columns: 3.5rem 1fr; align-items: center; text-align: left; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
-      .project-gallery-track { animation: none; }
-    }
-  </style>
-</head>
+<html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>HISS WEB | Thiết kế website cá nhân &amp; quản lý</title><meta name="description" content="Khải Minh thiết kế portfolio, website giới thiệu và hệ thống quản lý cho cửa hàng, doanh nghiệp nhỏ. Xem dịch vụ, giá và dự án HISS WEB."><style>
+
+:root{color-scheme:dark;--bg:#080a0f;--text:#eef0f4;--muted:#b2b7c3;--border:#ffffff1f;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;scroll-behavior:smooth}
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:linear-gradient(180deg,#07080d,#090a11);color:var(--text);line-height:1.65}
+a{color:inherit;text-underline-offset:4px}
+img{display:block;max-width:100%;height:auto}
+button{font:inherit;color:inherit;cursor:pointer}
+button,a,summary{-webkit-tap-highlight-color:transparent}
+a:focus-visible,button:focus-visible,summary:focus-visible,.gallery:focus-visible{outline:2px solid #d9e3ff;outline-offset:5px}
+h1,h2,h3{line-height:1.2;text-wrap:balance}
+p{color:var(--muted)}
+.container{width:min(1180px,calc(100% - 2rem));margin:auto}
+.topbar{position:sticky;top:0;z-index:20;background:#0a0c12f5;backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+nav{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 0}
+.brand{font-weight:750;letter-spacing:.12em;text-decoration:none;white-space:nowrap}
+.nav-links{display:flex;gap:1.2rem}
+.nav-links a{color:var(--muted);text-decoration:none;padding:.5rem 0}
+.nav-links a:hover{color:#fff}
+.menu-toggle{display:none;background:#ffffff0a;border:1px solid var(--border);border-radius:.75rem;min-height:44px;padding:0 1rem}
+.section{padding:4rem 0;scroll-margin-top:6rem}
+.section-title{display:block;text-transform:uppercase;letter-spacing:.15em;font-size:.85rem;color:var(--muted);margin-bottom:1rem}
+.section h2{font-size:clamp(1.9rem,3vw,2.8rem);margin-bottom:1rem}
+.section>p{max-width:750px;margin-bottom:1.5rem}
+.hero{display:grid;grid-template-columns:1.35fr .8fr;align-items:center;gap:3rem;padding:4rem 0}
+.hero h1{font-size:clamp(2.25rem,3.8vw,3.8rem);margin:1.25rem 0}
+.hero p{margin-bottom:1.5rem}
+.eyebrow{display:inline-block;border:1px solid var(--border);background:#ffffff08;border-radius:99px;padding:.5rem .85rem;font-size:.85rem}
+.actions{display:flex;flex-wrap:wrap;gap:.75rem;margin:1.5rem 0}
+.button,.button-secondary,.gallery-controls button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:.7rem 1.1rem;border:1px solid var(--border);border-radius:99px;background:#ffffff0a;text-decoration:none;font-weight:600;text-align:center}
+.button{background:#e4e7ed;color:#11141c}
+.button:hover{background:#fff}
+.button-secondary:hover,.gallery-controls button:hover{background:#ffffff18}
+.hero-points{display:flex;flex-wrap:wrap;gap:.6rem 1.2rem;list-style:none;color:var(--muted);font-size:.9rem}
+.hero-points li::before{content:'✓ ';color:var(--text)}
+.image-frame{padding:1rem;border:1px solid var(--border);border-radius:2rem;background:#ffffff06}
+.image-frame img{width:100%;aspect-ratio:1;object-fit:cover;object-position:center;border-radius:1.3rem}
+.image-frame figcaption{font-size:.9rem;margin-top:1rem;text-align:center;color:var(--muted)}
+.price-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+.card,.project-card,.panel,.contact-card{padding:1.5rem;border:1px solid var(--border);border-radius:1.4rem;background:#ffffff06;min-width:0}
+.card{display:flex;flex-direction:column;gap:1rem}
+.card h3{font-size:1.3rem}
+.card .button{margin-top:auto}
+.price{font-size:clamp(1.3rem,1.8vw,1.65rem);font-weight:750;color:var(--text)}
+.student-price{display:block;color:#e4eaff;font-size:1.5rem;font-weight:750}
+.featured{border-color:#ffffff50;background:#ffffff09}
+.features{padding-left:1.2rem;display:grid;gap:.5rem;color:var(--muted)}
+.scope{font-size:.9rem;border-top:1px solid var(--border);padding-top:1rem}
+.pricing-note{margin-top:1rem;padding:1.3rem;border:1px solid var(--border);border-radius:1rem;color:var(--muted)}
+details{border-top:1px solid var(--border);padding-top:.8rem}
+summary{cursor:pointer;min-height:44px;padding:.6rem 0;font-weight:600}
+details p{margin:.7rem 0}
+details .features{margin:.7rem 0}
+.project-list{display:grid;grid-template-columns:minmax(0,1fr);gap:1.3rem}
+.project-header{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem}
+.project-header h3{font-size:1.35rem}
+.project-header a{font-size:.85rem;flex-shrink:0}
+.project-card>p{margin-bottom:1rem}
+.project-card>a{display:block;margin-bottom:1rem}
+.project-card>a img{width:100%;aspect-ratio:16/10;object-fit:contain;background:#10131b;border-radius:.75rem}
+.gallery{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:1rem;scrollbar-width:thin;scrollbar-color:#717784 #151821}
+.gallery>a{flex:0 0 100%;min-width:0;scroll-snap-align:start;scroll-snap-stop:always}
+.gallery img{width:100%;aspect-ratio:16/10;object-fit:contain;background:#10131b;border-radius:.6rem}
+.gallery-controls{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin:1rem 0}
+.gallery-controls[hidden]{display:none}
+.gallery-controls button{font-size:.85rem;padding:.5rem .8rem}
+.gallery-controls button:disabled{opacity:.4;cursor:default}
+small{display:block;color:var(--muted);margin-top:.6rem}
+.internal{display:flex;flex-direction:column;justify-content:center}
+.internal .features{margin:1rem 0}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.process-list{list-style:none;counter-reset:step;display:grid;gap:.8rem}
+.process-list li{display:flex;align-items:center;gap:1rem;padding:1rem;border:1px solid var(--border);border-radius:1rem}
+.process-list li:before{counter-increment:step;content:counter(step);display:grid;place-items:center;background:#ffffff12;border-radius:50%;width:2.2rem;height:2.2rem;flex-shrink:0}
+.panel h3{margin-bottom:1rem}
+.panel p+p{margin-top:1rem}
+.faq-list{max-width:850px}
+.faq-list details{padding:.6rem 0}
+.contact-card{display:grid;gap:1rem}
+.quick-links{display:flex;flex-wrap:wrap;gap:1rem}
+.contact-card a{overflow-wrap:anywhere}
+.contact-card .button{justify-self:start}
+.footer{border-top:1px solid var(--border);padding:2rem 0 6rem;color:var(--muted)}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:2rem}
+.footer p{margin-top:.5rem}
+.copyright{margin-top:2rem;font-size:.85rem}
+.floating-chat{position:fixed;bottom:1rem;right:1rem;z-index:25;border:1px solid #ffffff30;border-radius:99px;padding:.7rem 1rem;background:#202532;color:#fff;text-decoration:none;font-size:.85rem;box-shadow:0 8px 30px #0006}
+.skip-link{position:fixed;top:-100px;left:1rem;z-index:50;background:#fff;color:#000;padding:1rem}
+.skip-link:focus{top:1rem}
+[hidden]{display:none!important}
+
+@media(max-width:1000px){.price-grid{grid-template-columns:1fr}
+.card{display:grid;grid-template-columns:1fr 1fr;align-items:start}
+.card h3,.card .scope,.card>.button{grid-column:1/-1}
+.card .button{justify-self:start}
+.hero{gap:1.5rem}
+.nav-links{gap:.8rem}
+}
+
+@media(max-width:720px){.container{width:calc(100% - 2rem)}
+nav{flex-wrap:wrap;padding:.65rem 0}
+.nav-links{width:100%;display:flex;flex-wrap:wrap;gap:.3rem 1.2rem}
+.js .menu-toggle{display:block}
+.js .nav-links{display:none}
+.js .nav-links.open{display:flex}
+.hero{grid-template-columns:1fr;padding:2rem 0}
+.hero-image{width:min(310px,85%);margin:auto}
+.hero h1{font-size:clamp(2rem,8vw,3rem)}
+.hero-points{display:grid;gap:.4rem}
+.section{padding:2.5rem 0}
+.project-list,.split,.footer-grid{grid-template-columns:1fr}
+.card{display:flex}
+.project-header{align-items:flex-start;flex-direction:column}
+.project-header a{width:100%}
+.card,.project-card,.panel,.contact-card{padding:1.2rem}
+.gallery-controls button{min-height:44px}
+.contact-card .button{width:100%}
+.actions a{flex:1 1 200px}
+.floating-chat{bottom:max(.75rem,env(safe-area-inset-bottom));right:.75rem}
+.section{scroll-margin-top:5.5rem}
+}
+
+@media(prefers-reduced-motion:reduce){:root{scroll-behavior:auto}
+}
+
+
+
+.project-list{align-items:start}
+.project-preview{overflow:hidden;border-radius:.8rem;background:#10131b;margin-bottom:.8rem}
+.project-track{display:flex;width:max-content}
+.project-image-set{display:flex;gap:1rem;padding-right:1rem}
+.project-image-set>a{display:block;flex:0 0 auto;width:clamp(240px,35vw,460px)}
+.project-image-set img{display:block;width:100%;aspect-ratio:16/10;object-fit:contain;border-radius:.6rem}
+.project-preview.is-ready .project-track{animation:project-scroll 38s linear infinite}
+.project-card:nth-child(even) .project-track{animation-direction:reverse}
+.project-preview:hover .project-track,.project-preview:focus-within .project-track,.project-card:has(details[open]) .project-track,.project-preview.is-paused .project-track{animation-play-state:paused}
+.motion-toggle{font-size:.8rem;padding:.4rem .7rem;margin-bottom:1rem}
+@keyframes project-scroll{to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.project-preview.is-ready .project-track{animation:none}.project-preview{overflow-x:auto}.project-image-set[aria-hidden]{display:none}.motion-toggle{display:none}}
+
+</style></head>
 <body>
-  <header class="topbar">
-    <div class="container">
-      <nav>
-        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Mở menu">
-          <span></span>
-          <span></span>
-        </button>
-        <div class="brand">GIỚI THIỆU</div>
-        <div class="nav-links" id="primary-navigation">
-          <a href="#about">Về tôi</a>
-          <a href="#portfolio">Dự án</a>
-          <a href="#services">Dịch vụ</a>
-          <a href="#pricing">Báo giá</a>
-          <a href="#faq">FAQ</a>
-          <a href="#contact">Liên hệ</a>
-        </div>
-      </nav>
-    </div>
-  </header>
+<a class="skip-link" href="#main">Đến nội dung chính</a>
+<header class="topbar">
+<div class="container">
+<nav aria-label="Điều hướng chính">
+<a class="brand" href="#main">HISS WEB</a>
+<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation">Mở menu</button>
+<div class="nav-links" id="primary-navigation">
+<a href="#pricing">Dịch vụ &amp; giá</a>
+<a href="#portfolio">Dự án</a>
+<a href="#about">Về tôi</a>
+<a href="#faq">Câu hỏi</a>
+<a href="#contact">Liên hệ</a>
+</div>
+</nav>
+</div>
+</header>
+<main id="main" class="container">
+<section class="hero" aria-labelledby="hero-title">
+<div>
+<span class="eyebrow">Ưu đãi portfolio dành cho sinh viên</span>
+<h1 id="hero-title">Thiết kế website cá nhân và hệ thống quản lý cho doanh nghiệp nhỏ</h1>
+<p>Từ portfolio xin việc đến website quản lý cửa hàng, tôi hỗ trợ xây dựng theo nhu cầu và ngân sách, với phạm vi công việc rõ ràng trước khi bắt đầu.</p>
+<div class="actions">
+<a class="button" href="#pricing">Xem dịch vụ &amp; giá</a>
+<a class="button-secondary" href="#portfolio">Xem dự án</a>
+</div>
+<ul class="hero-points">
+<li>Có demo để trao đổi.</li>
+<li>Thống nhất phạm vi và chi phí.</li>
+<li>Bàn giao mã nguồn.</li>
+</ul>
+</div>
+<div class="hero-image">
+<figure class="image-frame">
+<img src="assets/khai-minh.webp" width="840" height="840" alt="Chân dung Khải Minh" fetchpriority="high">
+<figcaption>Khải Minh — Thiết kế &amp; phát triển website</figcaption>
+</figure>
+</div>
+</section>
+<section id="services" class="section">
+<span class="section-title">Dịch vụ</span>
+<h2>Chọn theo nhu cầu, rõ về chi phí</h2>
+<p>Portfolio để giới thiệu năng lực, website cho cửa hàng hoặc hệ thống quản lý công việc: tôi cùng bạn chọn phạm vi phù hợp.</p>
+<div id="pricing" style="scroll-margin-top:6rem" class="price-grid">
+<article class="card featured">
+<h3>Website cá nhân / giới thiệu</h3>
+<div>
+<p>Giá thông thường: 500.000đ</p>
+<strong class="student-price">Sinh viên: 300.000đ</strong>
+</div>
+<p>Phù hợp portfolio xin việc, giới thiệu bản thân hoặc sản phẩm/dịch vụ đơn giản.</p>
+<ul class="features">
+<li>Website giới thiệu cơ bản.</li>
+<li>Hiển thị tốt trên điện thoại và máy tính.</li>
+<li>Trình bày kỹ năng, dự án và liên hệ.</li>
+<li>Bàn giao mã nguồn.</li>
+</ul>
+<p class="scope">Không mặc định bao gồm trang quản trị hoặc cơ sở dữ liệu.</p>
+<a class="button" href="https://zalo.me/0332311703" target="_blank" rel="noopener noreferrer">Tư vấn website cá nhân</a>
+</article>
+<article class="card">
+<h3>Website quản lý quán / cửa hàng</h3>
+<div>
+<small>Giá tham khảo</small>
+<strong class="price">3.000.000–5.000.000đ</strong>
+</div>
+<p>Phù hợp quán cà phê và cửa hàng cần quản lý bán hàng, nhân viên và hoạt động hằng ngày.</p>
+<ul class="features">
+<li>Quản lý sản phẩm/menu.</li>
+<li>Tạo và quản lý đơn hàng.</li>
+<li>Quản lý nhân viên.</li>
+<li>Trang quản trị và cơ sở dữ liệu.</li>
+</ul>
+<details>
+<summary>Xem chức năng có thể triển khai</summary>
+<ul class="features">
+<li>Thanh toán.</li>
+<li>Quản lý nguyên liệu/tồn kho.</li>
+<li>Voucher.</li>
+<li>Thống kê doanh thu.</li>
+</ul>
+</details>
+<p class="scope">Danh sách trên là các chức năng có thể lựa chọn. Phạm vi và giá được chốt theo nhu cầu; không mặc định bao gồm tất cả.</p>
+<a class="button" href="https://zalo.me/0332311703" target="_blank" rel="noopener noreferrer">Tư vấn quản lý cửa hàng</a>
+</article>
+<article class="card">
+<h3>Hệ thống quản lý doanh nghiệp</h3>
+<div>
+<small>Giá khởi điểm</small>
+<strong class="price">Từ 6.000.000đ</strong>
+</div>
+<p>Phù hợp doanh nghiệp cần quản lý nhân viên và hoạt động tập trung.</p>
+<ul class="features">
+<li>Quản lý nhân viên và phòng ban.</li>
+<li>Chấm công.</li>
+<li>Phân quyền.</li>
+<li>Quản lý thu chi.</li>
+</ul>
+<details>
+<summary>Xem chức năng mở rộng</summary>
+<ul class="features">
+<li>Báo cáo tổng hợp.</li>
+<li>Quản lý công việc.</li>
+<li>Mở rộng theo quy trình doanh nghiệp.</li>
+</ul>
+</details>
+<p class="scope">Giá từ 6.000.000đ cho phạm vi cơ bản được thống nhất. Chi phí tăng theo chức năng, độ phức tạp và yêu cầu tích hợp.</p>
+<a class="button" href="https://zalo.me/0332311703" target="_blank" rel="noopener noreferrer">Trao đổi nhu cầu doanh nghiệp</a>
+</article>
+</div>
+<div class="pricing-note">Giá chưa bao gồm tên miền và chi phí hosting/server nếu cần. Phí tên miền tùy đuôi và giá nhà cung cấp tại thời điểm đăng ký; tôi hỗ trợ kiểm tra và mua tên miền. Chi phí vận hành, bảo trì và yêu cầu ngoài phạm vi được báo riêng trước khi thực hiện.</div>
+</section>
+<section id="portfolio" class="section">
+<span class="section-title">Dự án tiêu biểu</span>
+<h2>Xem giao diện, tìm hiểu cách làm</h2>
+<p>Khám phá từng dự án qua dải ảnh trôi ngang. Mở chi tiết để tìm hiểu thêm và xem từng ảnh; chọn “Xem trực tiếp” ở các dự án có bản demo.</p>
+<div class="project-list">
+<article class="project-card">
+<div class="project-header">
+<h3>SkillLink Event</h3>
+<a class="button-secondary" href="https://mrhiss1703-web.github.io/skilllink-event/" target="_blank" rel="noopener noreferrer">Xem trực tiếp</a>
+</div>
+<p>Website giới thiệu dịch vụ tổ chức sự kiện, thiết bị và hoạt động của SkillLink.</p>
+<div class="project-preview" role="region" aria-label="Ảnh xem trước dự án"><div class="project-track"><div class="project-image-set"><a href="assets/skilllink-event-1.webp" target="_blank" rel="noopener noreferrer" aria-label="Mở ảnh 1 của SkillLink Event"><img src="assets/skilllink-event-1.webp" width="1400" height="781" alt="Giao diện SkillLink Event — ảnh 1" loading="lazy" decoding="async"></a></div></div></div>
+<button type="button" class="motion-toggle" hidden aria-pressed="false">Tạm dừng ảnh</button>
+<details>
+<summary>Chi tiết dự án</summary>
+<p>Giới thiệu sự kiện; trình bày thông tin và hình ảnh hoạt động.</p>
+<p>Phần tôi thực hiện: thông tin đóng góp cụ thể đang được cập nhật sau khi xác nhận.</p>
+<div class="gallery-controls" hidden>
+<button type="button" data-direction="-1" aria-label="Ảnh trước của SkillLink Event">← Ảnh trước</button>
+<span class="gallery-status" aria-live="polite">
+</span>
+<button type="button" data-direction="1" aria-label="Ảnh tiếp của SkillLink Event">Ảnh tiếp →</button>
+</div>
+<div class="gallery" tabindex="0" role="region" aria-label="Thư viện ảnh SkillLink Event">
+<a href="assets/skilllink-event-1.webp" target="_blank" rel="noopener noreferrer" aria-label="Mở ảnh 1 của SkillLink Event"><img src="assets/skilllink-event-1.webp" width="1400" height="781" alt="Giao diện SkillLink Event — ảnh 1" loading="lazy" decoding="async"></a>
+<a href="assets/skilllink-event-2.webp" target="_blank" rel="noopener noreferrer" aria-label="Mở ảnh 2 của SkillLink Event"><img src="assets/skilllink-event-2.webp" width="1400" height="739" alt="Giao diện SkillLink Event — ảnh 2" loading="lazy" decoding="async"></a>
+<a href="assets/skilllink-event-3.webp" target="_blank" rel="noopener noreferrer" aria-label="Mở ảnh 3 của SkillLink Event"><img src="assets/skilllink-event-3.webp" width="1400" height="771" alt="Giao diện SkillLink Event — ảnh 3" loading="lazy" decoding="async"></a>
+<a href="assets/skilllink-event-4.webp" target="_blank" rel="noopener noreferrer" aria-label="Mở ảnh 4 của SkillLink Event"><img src="assets/skilllink-event-4.webp" width="1400" height="780" alt="Giao diện SkillLink Event — ảnh 4" loading="lazy" decoding="async"></a>
+<a href="assets/skilllink-event-5.webp" target="_blank" rel="noopener noreferrer" aria-label="Mở ảnh 5 của SkillLink Event"><img src="assets/skilllink-event-5.webp" width="1400" height="772" alt="Giao diện SkillLink Event — ảnh 5" loading="lazy" decoding="async"></a>
+<a href="assets/skilllink-event-6.webp" target="_blank" rel="noopener noreferrer" aria-label="Mở ảnh 6 của SkillLink Event"><img src="assets/skilllink-event-6.webp" width="1400" height="778" alt="Giao diện SkillLink Event — ảnh 6" loading="lazy" decoding="async"></a>
+</div>
+<small>Vuốt hoặc cuộn ngang để xem ảnh; chọn ảnh để mở kích thước lớn.</small>
+</details>
+</article>
+<article class="project-card">
+<div class="project-header">
+<h3>Vĩnh Long Marathon</h3>
+<a class="button-secondary" href="https://vinh-long-marathon.vercel.app/" target="_blank" rel="noopener noreferrer">Xem trực tiếp</a>
+</div>
+<p>Website giới thiệu giải chạy Vĩnh Long Marathon và thông tin dành cho người tham gia.</p>
+<div class="project-preview" role="region" aria-label="Ảnh xem trước dự án"><div class="project-track"><div class="project-image-set"><a href="assets/marathon-1.webp" target="_blank" rel="noopener noreferrer" aria-label="Mở ảnh 1 của Vĩnh Long Marathon">
+<img src="assets/marathon-1.webp" width="1400" height="774" alt="Giao diện Vĩnh Long Marathon — ảnh 1" loading="lazy" decoding="async">
+</a></div></div></div>
+<button type="button" class="motion-toggle" hidden aria-pressed="false">Tạm dừng ảnh</button>
+<details>
+<summary>Chi tiết dự án</summary>
+<p>Giới thiệu giải chạy; trình bày nội dung và hình ảnh sự kiện.</p>
+<p>Phần tôi thực hiện: thông tin đóng góp cụ thể đang được cập nhật sau khi xác nhận.</p>
+<div class="gallery-controls" hidden>
+<button type="button" data-direction="-1" aria-label="Ảnh trước của Vĩnh Long Marathon">← Ảnh trước</button>
+<span class="gallery-status" aria-live="polite">
+</span>
+<button type="button" data-direction="1" aria-label="Ảnh tiếp của Vĩnh Long Marathon">Ảnh tiếp →</button>
+</div>
+<div class="gallery" tabindex="0" role="region" aria-label="Thư viện ảnh Vĩnh Long Marathon">
+<a href="assets/marathon-1.webp" target="_blank" rel="noopener noreferrer" aria-label="Mở ảnh 1 của Vĩnh Long Marathon">
+<img src="assets/marathon-1.webp" width="1400" height="774" alt="Giao diện Vĩnh Long Marathon — ảnh 1" loading="lazy" decoding="async">
+</a>
+<a href="assets/marathon-2.webp" target="_blank" rel="noopener noreferrer" aria-label="Mở ảnh 2 của Vĩnh Long Marathon">
+<img src="assets/marathon-2.webp" width="1400" height="775" alt="Giao diện Vĩnh Long Marathon — ảnh 2" loading="lazy" decoding="async">
+</a>
+<a href="assets/marathon-3.webp" target="_blank" rel="noopener noreferrer" aria-label="Mở ảnh 3 của Vĩnh Long Marathon">
+<img src="assets/marathon-3.webp" width="1400" height="772" alt="Giao diện Vĩnh Long Marathon — ảnh 3" loading="lazy" decoding="async">
+</a>
+<a href="assets/marathon-4.webp" target="_blank" rel="noopener noreferrer" aria-label="Mở ảnh 4 của Vĩnh Long Marathon">
+<img src="assets/marathon-4.webp" width="1400" height="660" alt="Giao diện Vĩnh Long Marathon — ảnh 4" loading="lazy" decoding="async">
+</a>
+<a href="assets/marathon-5.webp" target="_blank" rel="noopener noreferrer" aria-label="Mở ảnh 5 của Vĩnh Long Marathon">
+<img src="assets/marathon-5.webp" width="1400" height="778" alt="Giao diện Vĩnh Long Marathon — ảnh 5" loading="lazy" decoding="async">
+</a>
+<a href="assets/marathon-6.webp" target="_blank" rel="noopener noreferrer" aria-label="Mở ảnh 6 của Vĩnh Long Marathon">
+<img src="assets/marathon-6.webp" width="1400" height="773" alt="Giao diện Vĩnh Long Marathon — ảnh 6" loading="lazy" decoding="async">
+</a>
+</div>
+<small>Vuốt hoặc cuộn ngang để xem ảnh; chọn ảnh để mở kích thước lớn.</small>
+</details>
+</article>
+<article class="project-card">
+<div class="project-header">
+<h3>SkillLink Job</h3>
+<a class="button-secondary" href="https://mrhiss1703-web.github.io/skilllink-job/" target="_blank" rel="noopener noreferrer">Xem trực tiếp</a>
+</div>
+<p>Website giới thiệu thông tin việc làm, giúp người xem tìm hiểu cơ hội nghề nghiệp.</p>
+<div class="project-preview" role="region" aria-label="Ảnh xem trước dự án"><div class="project-track"><div class="project-image-set"><a href="assets/job-1.webp" target="_blank" rel="noopener noreferrer" aria-label="Mở ảnh 1 của SkillLink Job">
+<img src="assets/job-1.webp" width="1400" height="759" alt="Giao diện SkillLink Job — ảnh 1" loading="lazy" decoding="async">
+</a></div></div></div>
+<button type="button" class="motion-toggle" hidden aria-pressed="false">Tạm dừng ảnh</button>
+<details>
+<summary>Chi tiết dự án</summary>
+<p>Trình bày thông tin việc làm và nội dung giới thiệu.</p>
+<p>Phần tôi thực hiện: thông tin đóng góp cụ thể đang được cập nhật sau khi xác nhận.</p>
+<div class="gallery-controls" hidden>
+<button type="button" data-direction="-1" aria-label="Ảnh trước của SkillLink Job">← Ảnh trước</button>
+<span class="gallery-status" aria-live="polite">
+</span>
+<button type="button" data-direction="1" aria-label="Ảnh tiếp của SkillLink Job">Ảnh tiếp →</button>
+</div>
+<div class="gallery" tabindex="0" role="region" aria-label="Thư viện ảnh SkillLink Job">
+<a href="assets/job-1.webp" target="_blank" rel="noopener noreferrer" aria-label="Mở ảnh 1 của SkillLink Job">
+<img src="assets/job-1.webp" width="1400" height="759" alt="Giao diện SkillLink Job — ảnh 1" loading="lazy" decoding="async">
+</a>
+<a href="assets/job-2.webp" target="_blank" rel="noopener noreferrer" aria-label="Mở ảnh 2 của SkillLink Job">
+<img src="assets/job-2.webp" width="1400" height="768" alt="Giao diện SkillLink Job — ảnh 2" loading="lazy" decoding="async">
+</a>
+<a href="assets/job-3.webp" target="_blank" rel="noopener noreferrer" aria-label="Mở ảnh 3 của SkillLink Job">
+<img src="assets/job-3.webp" width="1400" height="774" alt="Giao diện SkillLink Job — ảnh 3" loading="lazy" decoding="async">
+</a>
+<a href="assets/job-4.webp" target="_blank" rel="noopener noreferrer" aria-label="Mở ảnh 4 của SkillLink Job">
+<img src="assets/job-4.webp" width="1400" height="766" alt="Giao diện SkillLink Job — ảnh 4" loading="lazy" decoding="async">
+</a>
+<a href="assets/job-5.webp" target="_blank" rel="noopener noreferrer" aria-label="Mở ảnh 5 của SkillLink Job">
+<img src="assets/job-5.webp" width="1400" height="762" alt="Giao diện SkillLink Job — ảnh 5" loading="lazy" decoding="async">
+</a>
+</div>
+<small>Vuốt hoặc cuộn ngang để xem ảnh; chọn ảnh để mở kích thước lớn.</small>
+</details>
+</article>
+<article class="project-card">
+<div class="project-header"><h3>Tuyết Băng Tarot</h3><span class="section-title">Website dịch vụ</span></div>
+<p>Website giới thiệu dịch vụ Tarot với tông tím nhẹ nhàng và phong cách huyền bí.</p>
+<div class="project-preview" role="region" aria-label="Ảnh xem trước dự án"><div class="project-track"><div class="project-image-set"><a href="assets/tarot-1.webp" target="_blank" rel="noopener noreferrer" aria-label="Mở ảnh 1 của Tuyết Băng Tarot"><img src="assets/tarot-1.webp" width="1400" height="571" alt="Giao diện Tuyết Băng Tarot — ảnh 1" loading="lazy" decoding="async"></a></div></div></div>
+<button type="button" class="motion-toggle" hidden aria-pressed="false">Tạm dừng ảnh</button>
+<details><summary>Chi tiết dự án</summary>
+<p>Giới thiệu các chủ đề tư vấn, hình thức trải bài, phản hồi khách hàng và khu vực liên hệ đặt lịch.</p>
+<div class="gallery-controls" hidden><button type="button" data-direction="-1" aria-label="Ảnh trước của Tuyết Băng Tarot">← Ảnh trước</button><span class="gallery-status" aria-live="polite"></span><button type="button" data-direction="1" aria-label="Ảnh tiếp của Tuyết Băng Tarot">Ảnh tiếp →</button></div>
+<div class="gallery" tabindex="0" role="region" aria-label="Thư viện ảnh Tuyết Băng Tarot">
+<a href="assets/tarot-1.webp" target="_blank" rel="noopener noreferrer" aria-label="Mở ảnh 1 của Tuyết Băng Tarot"><img src="assets/tarot-1.webp" width="1400" height="571" alt="Giao diện Tuyết Băng Tarot — ảnh 1" loading="lazy" decoding="async"></a>
+<a href="assets/tarot-2.webp" target="_blank" rel="noopener noreferrer" aria-label="Mở ảnh 2 của Tuyết Băng Tarot"><img src="assets/tarot-2.webp" width="1400" height="775" alt="Giao diện Tuyết Băng Tarot — ảnh 2" loading="lazy" decoding="async"></a>
+<a href="assets/tarot-3.webp" target="_blank" rel="noopener noreferrer" aria-label="Mở ảnh 3 của Tuyết Băng Tarot"><img src="assets/tarot-3.webp" width="1400" height="782" alt="Giao diện Tuyết Băng Tarot — ảnh 3" loading="lazy" decoding="async"></a>
+<a href="assets/tarot-4.webp" target="_blank" rel="noopener noreferrer" aria-label="Mở ảnh 4 của Tuyết Băng Tarot"><img src="assets/tarot-4.webp" width="1400" height="781" alt="Giao diện Tuyết Băng Tarot — ảnh 4" loading="lazy" decoding="async"></a>
+<a href="assets/tarot-5.webp" target="_blank" rel="noopener noreferrer" aria-label="Mở ảnh 5 của Tuyết Băng Tarot"><img src="assets/tarot-5.webp" width="1400" height="769" alt="Giao diện Tuyết Băng Tarot — ảnh 5" loading="lazy" decoding="async"></a>
+</div><small>Vuốt hoặc cuộn ngang để xem ảnh; chọn ảnh để mở kích thước lớn.</small>
+</details></article>
+</div>
+</section>
+<section id="about" class="section">
+<span class="section-title">Về tôi</span>
+<h2>Khải Minh, sinh viên Kỹ thuật phần mềm</h2>
+<p>Tôi có kinh nghiệm triển khai dự án website thực tế. Bạn trao đổi trực tiếp với tôi để làm rõ nhu cầu, chọn cách triển khai phù hợp và được hướng dẫn sử dụng sau bàn giao.</p>
+</section>
+<section id="process" class="section">
+<span class="section-title">Quy trình &amp; hỗ trợ</span>
+<h2>Bốn bước từ ý tưởng đến bàn giao</h2>
+<div class="split">
+<ol class="process-list">
+<li>Trao đổi nhu cầu.</li>
+<li>Chốt phạm vi, chi phí và tiến độ.</li>
+<li>Làm demo, nhận phản hồi và hoàn thiện.</li>
+<li>Bàn giao, hướng dẫn và hỗ trợ.</li>
+</ol>
+<div class="panel" id="support">
+<h3>Hỗ trợ sau bàn giao</h3>
+<p>Trong 7 ngày sau bàn giao, tôi hỗ trợ sửa lỗi thuộc phạm vi đã thống nhất và điều chỉnh nhỏ nội dung đã bàn giao.</p>
+<p>Chức năng mới, đổi thiết kế lớn hoặc yêu cầu ngoài phạm vi được trao đổi và báo phí riêng. Sau thời gian hỗ trợ ban đầu, có thể tiếp tục bảo trì theo thỏa thuận riêng.</p>
+</div>
+</div>
+</section>
+<section id="faq" class="section">
+<span class="section-title">Giải đáp</span>
+<h2>Câu hỏi thường gặp</h2>
+<div class="faq-list">
+<details>
+<summary>Tôi là sinh viên thì chọn gói nào?</summary>
+<p>Gói website cá nhân / giới thiệu phù hợp portfolio xin việc, với ưu đãi sinh viên 300.000đ; giá thông thường 500.000đ.</p>
+</details>
+<details>
+<summary>Giá đã gồm tên miền và máy chủ chưa?</summary>
+<p>Chưa. Giá chưa gồm tên miền và hosting/server nếu cần. Phí tùy nhà cung cấp tại thời điểm đăng ký; tôi hỗ trợ kiểm tra và mua tên miền.</p>
+</details>
+<details>
+<summary>Bao lâu hoàn thành?</summary>
+<p>Website giới thiệu cơ bản dự kiến 3–7 ngày sau khi nhận đủ nội dung và thống nhất yêu cầu. Hệ thống quản lý có tiến độ riêng theo phạm vi đã chốt.</p>
+</details>
+<details>
+<summary>Được chỉnh sửa và hỗ trợ thế nào?</summary>
+<p>Trong 7 ngày sau bàn giao, tôi hỗ trợ sửa lỗi thuộc phạm vi đã thống nhất và điều chỉnh nhỏ nội dung đã bàn giao. Chức năng mới, đổi thiết kế lớn hoặc yêu cầu ngoài phạm vi được trao đổi và báo phí riêng. Sau thời gian hỗ trợ ban đầu, có thể tiếp tục bảo trì theo thỏa thuận riêng.</p>
+</details>
+<details>
+<summary>Có bàn giao mã nguồn không?</summary>
+<p>Có. Tôi bàn giao mã nguồn và hướng dẫn sử dụng sau khi hoàn thành theo phạm vi đã thống nhất.</p>
+</details>
+<details>
+<summary>Cần chuẩn bị gì trước khi làm?</summary>
+<p>Bạn chuẩn bị mục tiêu, nội dung, ảnh, thông tin liên hệ và ngân sách dự kiến. Với hệ thống quản lý, hãy mô tả quy trình hiện tại và các chức năng cần ưu tiên.</p>
+</details>
+</div>
+</section>
+<section id="contact" class="section">
+<span class="section-title">Liên hệ</span>
+<h2>Bạn đang cần website như thế nào?</h2>
+<p>Gửi tôi nhu cầu, ngân sách dự kiến và một mẫu website bạn thích để bắt đầu trao đổi.</p>
+<div class="contact-card">
+<a class="button" href="https://zalo.me/0332311703" target="_blank" rel="noopener noreferrer">Trao đổi qua Zalo</a>
+<p>
+<strong>Email:</strong> <a href="mailto:mrhiss1703@gmail.com">mrhiss1703@gmail.com</a>
+</p>
+<p>
+<strong>Điện thoại:</strong> <a href="tel:+84332311703">+84 332 311 703</a>
+</p>
+<p>
+<strong>Địa chỉ:</strong> Cần Thơ, Việt Nam</p>
+<div class="quick-links">
+<a href="https://zalo.me/0332311703" target="_blank" rel="noopener noreferrer">Zalo</a>
+<a href="https://www.facebook.com/profile.php?id=61595756244411" target="_blank" rel="noopener noreferrer">Facebook</a>
+</div>
+</div>
+</section>
+</main>
+<footer class="footer">
+<div class="container footer-grid">
+<div>
+<a class="brand" href="#main">HISS WEB</a>
+<p>Website cá nhân và hệ thống quản lý cho doanh nghiệp nhỏ.</p>
+</div>
+<div>
+<strong>Khám phá</strong>
+<p>
+<a href="#pricing">Dịch vụ &amp; giá</a>
+</p>
+<p>
+<a href="#portfolio">Dự án</a>
+</p>
+<p>
+<a href="#about">Về tôi</a>
+</p>
+</div>
+<div>
+<strong>Liên hệ</strong>
+<p>
+<a href="mailto:mrhiss1703@gmail.com">mrhiss1703@gmail.com</a>
+</p>
+<p>
+<a href="tel:+84332311703">+84 332 311 703</a>
+</p>
+<p>
+<a href="https://github.com/mrhiss1703">Github</a>
+</p>
+</div>
+</div>
+<p class="container copyright">© 2026 Đặng Huỳnh Khải Minh (Hiss). All rights reserved.</p>
+</footer>
+<a class="floating-chat" href="https://zalo.me/0332311703" target="_blank" rel="noopener noreferrer">Trao đổi qua Zalo ↗</a>
+<script>
+const toggle = document.querySelector('.menu-toggle');
+const links = document.querySelector('.nav-links');
+function closeMenu() { links.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); toggle.textContent='Mở menu'; }
+toggle.addEventListener('click', () => { const open = toggle.getAttribute('aria-expanded') !== 'true'; links.classList.toggle('open',open); toggle.setAttribute('aria-expanded',String(open)); toggle.textContent=open?'Đóng menu':'Mở menu'; });
+links.querySelectorAll('a').forEach(a => a.addEventListener('click',closeMenu));
+document.addEventListener('click', e => { if (!e.target.closest('nav')) closeMenu(); });
+document.addEventListener('keydown', e => { if(e.key==='Escape' && toggle.getAttribute('aria-expanded')==='true'){ closeMenu(); toggle.focus(); } });
+window.addEventListener('resize', () => { if(innerWidth>720) closeMenu(); });
+document.documentElement.classList.add('js');
 
-  <main class="container">
-    <section class="hero">
-      <div class="hero-copy fade-in visible">
-        <span class="eyebrow">Website chuyên nghiệp giá sinh viên</span>
-        <h1>Thiết kế website giới thiệu chuyên nghiệp</h1>
-        <p>Landing page responsive, tải nhanh và hỗ trợ bảo trì lâu dài. Hoàn thành trong 3-7 ngày, phù hợp cá nhân, startup và dự án nhỏ.</p>
-        <div class="actions">
-          <a class="button" href="#pricing">Xem báo giá</a>
-          <a class="button-secondary" href="#contact">Nhận tư vấn</a>
-        </div>
+document.querySelectorAll('.project-card').forEach(card => {
+ const preview=card.querySelector('.project-preview'), set=preview.querySelector('.project-image-set');
+ set.replaceChildren(...Array.from(card.querySelectorAll('.gallery > a'), a=>a.cloneNode(true)));
+ const copy=set.cloneNode(true); copy.setAttribute('aria-hidden','true'); copy.inert=true;
+ copy.querySelectorAll('a').forEach(a=>a.tabIndex=-1);
+ preview.querySelector('.project-track').append(copy); preview.classList.add('is-ready');
+ const button=card.querySelector('.motion-toggle'); button.hidden=false;
+ button.addEventListener('click',()=>{const paused=preview.classList.toggle('is-paused');button.setAttribute('aria-pressed',String(paused));button.textContent=paused?'Tiếp tục trôi ảnh':'Tạm dừng ảnh';});
+});
 
-        <div class="hero-grid">
-          <div class="stat">
-            <strong>6+</strong>
-            <span>Dự án học tập</span>
-          </div>
-          <div class="stat">
-            <strong>12+</strong>
-            <span>Trang đã thiết kế</span>
-          </div>
-          <div class="stat">
-            <strong>24h</strong>
-            <span>Phản hồi trung bình</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="hero-image fade-in visible" style="transition-delay: 120ms;">
-        <div class="image-frame">
-          <img src="1785778113971_2158756089354811450_7738196954461640876_e2d355e4e75a5635da4a4618dc2b739a.jpg" alt="Ảnh cá nhân" />
-        </div>
-      </div>
-    </section>
-
-    <section id="about" class="section fade-in">
-      <span class="section-title">Giới thiệu</span>
-      <h2>Sinh viên Kỹ thuật phần mềm, phát triển website thực tế</h2>
-      <p>Bạn cần website giới thiệu cá nhân, startup hoặc dự án nhỏ với chi phí sinh viên và hỗ trợ bảo trì lâu dài? Tôi thiết kế trang nhanh gọn, responsive và hỗ trợ cập nhật sau bàn giao.</p>
-      <div class="split">
-        <div class="panel">
-          <p><strong>Phong cách:</strong> tối giản, chuyên nghiệp và tập trung vào chuyển đổi khách hàng.</p>
-          <p><strong>Hỗ trợ:</strong> xây website giới thiệu, triển khai landing page, sửa lỗi và bảo trì website với chi phí duy trì hợp lý.</p>
-        </div>
-        <div class="panel">
-          <ul class="feature-list">
-            <li><strong>Giá sinh viên</strong> Thiết kế website từ 0-300k, phù hợp ngân sách học sinh/sinh viên.</li>
-            <li><strong>Bàn giao source</strong> Đầy đủ mã nguồn, dễ mở rộng sau này.</li>
-            <li><strong>Hỗ trợ</strong> Tư vấn, cập nhật và sửa lỗi sau khi bàn giao.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section id="portfolio" class="section fade-in">
-      <span class="section-title">Dự án tiêu biểu</span>
-      <h2>Các dự án website đã hoàn thành</h2>
-      <p>Đây là những trang đã thiết kế để thể hiện khả năng giao diện responsive, bố cục rõ ràng và trải nghiệm người dùng tối ưu.</p>
-      <div class="project-list">
-        <article class="project-card">
-          <div class="project-header">
-            <h3>Skilllink Event</h3>
-            <a class="button-secondary" href="https://mrhiss1703-web.github.io/skilllink-event/" target="_blank" rel="noopener noreferrer">Xem trực tiếp</a>
-          </div>
-          <div class="project-gallery" data-project="skilllink" aria-label="Hình ảnh dự án Skilllink Event"></div>
-        </article>
-        <article class="project-card">
-          <div class="project-header">
-            <h3>Vĩnh Long Marathon</h3>
-            <a class="button-secondary" href="https://vinh-long-marathon.vercel.app/" target="_blank" rel="noopener noreferrer">Xem trực tiếp</a>
-          </div>
-          <div class="project-gallery" data-project="marathon" aria-label="Hình ảnh dự án Vĩnh Long Marathon"></div>
-        </article>
-        <article class="project-card">
-          <div class="project-header">
-            <h3>Skilllink Job</h3>
-            <a class="button-secondary" href="https://mrhiss1703-web.github.io/skilllink-job/" target="_blank" rel="noopener noreferrer">Xem trực tiếp</a>
-          </div>
-          <div class="project-gallery" data-project="job" aria-label="Hình ảnh dự án Skilllink Job"></div>
-        </article>
-      </div>
-    </section>
-
-    <section id="services" class="section fade-in">
-      <span class="section-title">Dịch vụ</span>
-      <h2>Dịch vụ phù hợp cho cá nhân và doanh nghiệp nhỏ</h2>
-      <p>Thiết kế website giới thiệu, bảo trì kỹ thuật và chỉnh sửa nội dung đều được phục vụ với chi phí hợp lý.</p>
-      <div class="cards">
-        <article class="card">
-          <h3>Thiết kế website</h3>
-          <p>Xây dựng website giới thiệu, landing page hoặc trang dịch vụ dễ dùng, responsive và chuyên nghiệp.</p>
-        </article>
-        <article class="card">
-          <h3>Bảo trì website</h3>
-          <p>Sửa lỗi, cập nhật nội dung và bảo trì kỹ thuật để website luôn hoạt động ổn định.</p>
-        </article>
-        <article class="card">
-          <h3>Chỉnh sửa theo yêu cầu</h3>
-          <p>Thay đổi nội dung, hình ảnh, cấu trúc trang theo phản hồi để tăng hiệu quả chuyển đổi.</p>
-        </article>
-      </div>
-      <div class="trust-grid" style="margin-top:2rem;">
-        <article class="card">
-          <h3>Giá phù hợp sinh viên</h3>
-          <p>Ưu tiên chi phí nhỏ để hợp tác, kể cả miễn phí thiết kế để lấy kinh nghiệm.</p>
-        </article>
-        <article class="card">
-          <h3>Bàn giao source</h3>
-          <p>Giao đầy đủ mã nguồn, giúp đối tác dễ dàng mở rộng hoặc chuyển giao sau này.</p>
-        </article>
-        <article class="card">
-          <h3>Hỗ trợ lâu dài</h3>
-          <p>Cập nhật, sửa lỗi và bảo trì website sau khi bàn giao với chi phí duy trì rõ ràng.</p>
-        </article>
-      </div>
-    </section>
-
-    <section id="process" class="section fade-in">
-      <span class="section-title">Quy trình</span>
-      <h2>Cách tôi triển khai dự án web</h2>
-      <p>Một quy trình đơn giản, rõ ràng giúp đối tác yên tâm và theo dõi tiến độ dễ dàng.</p>
-      <ul class="process-list">
-        <li><div><strong>Trao đổi nhu cầu</strong><p>Thu thập yêu cầu, mục tiêu và nội dung website.</p></div></li>
-        <li><div><strong>Thiết kế demo</strong><p>Chuẩn bị giao diện, layout và demo ban đầu.</p></div></li>
-        <li><div><strong>Chỉnh sửa</strong><p>Hoàn thiện theo phản hồi và nhu cầu của đối tác.</p></div></li>
-        <li><div><strong>Bàn giao source</strong><p>Giao mã nguồn, hướng dẫn sử dụng và cài đặt.</p></div></li>
-        <li><div><strong>Hỗ trợ 1 tuần</strong><p>Hỗ trợ sửa đổi, update miễn phí trong 1 tuần nếu chưa ưng ý.</p></div></li>
-      </ul>
-    </section>
-
-    <section id="pricing" class="section fade-in">
-      <span class="section-title">Báo giá</span>
-      <h2>Giá thiết kế website Free / 200-300k</h2>
-      <p>Gói giới thiệu cơ bản Free. Gói quán cafe/doanh nghiệp nhỏ 200-300k với chức năng và quản lý database cơ bản. Hỗ trợ sửa đổi miễn phí trong tuần đầu nếu chưa ưng ý.</p>
-      <div class="price-grid">
-        <article class="card">
-          <h3>Gói Cơ bản</h3>
-          <p>Website giới thiệu 1 trang, responsive, phù hợp cá nhân và portfolio.</p>
-          <p><strong>Free</strong></p>
-        </article>
-        <article class="card">
-          <h3>Gói Quán cafe / doanh nghiệp nhỏ</h3>
-          <p>Website 3-5 trang, responsive, form liên hệ, quản lý database cơ bản.</p>
-          <p><strong>200 - 300k</strong></p>
-        </article>
-        <article class="card">
-          <h3>Gói Theo yêu cầu</h3>
-          <p>Thiết kế theo nhu cầu đặc thù, tính năng mở rộng hoặc dự án lớn hơn.</p>
-          <p><strong>Liên hệ</strong></p>
-        </article>
-      </div>
-    </section>
-
-    <section id="faq" class="section fade-in">
-      <span class="section-title">FAQ</span>
-      <h2>Câu hỏi thường gặp</h2>
-      <ul class="faq-list">
-        <li>
-          <h4>Bao lâu hoàn thành?</h4>
-          <p>Thông thường 3-7 ngày, tùy yêu cầu nội dung và số trang.</p>
-        </li>
-        <li>
-          <h4>Có chỉnh sửa không?</h4>
-          <p>Có, bạn có thể yêu cầu chỉnh sửa sau khi xem demo ban đầu.</p>
-        </li>
-        <li>
-          <h4>Có bảo hành không?</h4>
-          <p>Có, tôi hỗ trợ sửa lỗi và bảo trì trong 1 tuần sau khi bàn giao.</p>
-        </li>
-        <li>
-          <h4>Có bàn giao source không?</h4>
-          <p>Có, toàn bộ mã nguồn sẽ được giao đầy đủ cho bạn sau khi hoàn thành.</p>
-        </li>
-      </ul>
-    </section>
-
-    <section id="contact" class="section fade-in">
-      <span class="section-title">Liên hệ</span>
-      <h2>Hợp tác cùng tôi</h2>
-      <p>Nếu bạn muốn có website riêng với chi phí hợp lý và hỗ trợ lâu dài, hãy liên hệ để tôi tư vấn chi tiết.</p>
-      <div class="contact-card">
-        <p><strong>Email:</strong> <a href="mailto:mrhiss1703@gmail.com">mrhiss1703@gmail.com</a></p>
-        <p><strong>Điện thoại:</strong> <a href="tel:+84332311703">+84 332 311 703</a></p>
-        <p><strong>Địa chỉ:</strong> Cần Thơ, Việt Nam</p>
-        <p><strong>Liên kết nhanh:</strong></p>
-        <div class="quick-links">
-          <a href="https://zalo.me/0332311703" target="_blank">Zalo</a>
-          <a href="https://facebook.com/mrhiss1703" target="_blank">Facebook</a>
-        </div>
-        <p><strong>Ưu đãi:</strong> Gói cơ bản free, gói quán cafe/doanh nghiệp nhỏ 200-300k. Hỗ trợ sửa đổi và update miễn phí trong 1 tuần đầu nếu chưa ưng ý.</p>
-        <a class="button" href="https://zalo.me/0332311703">Chat Zalo ngay</a>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="container footer-grid">
-      <div>
-        <div class="brand">HISS WEB</div>
-        <p>Thiết kế website giới thiệu, landing page và hỗ trợ bảo trì với chi phí sinh viên.</p>
-      </div>
-      <div>
-        <h4>Menu</h4>
-        <p><a href="#about">Về tôi</a></p>
-        <p><a href="#portfolio">Dự án</a></p>
-        <p><a href="#pricing">Báo giá</a></p>
-      </div>
-      <div>
-        <h4>Liên hệ</h4>
-        <p><a href="mailto:mrhiss1703@gmail.com">mrhiss1703@gmail.com</a></p>
-        <p><a href="tel:+84332311703">+84 332 311 703</a></p>
-        <p><a href="https://github.com/mrhiss1703">Github</a></p>
-      </div>
-    </div>
-    <div class="container" style="margin-top:1.5rem; text-align:center;">© 2026 Đặng Huỳnh Khải Minh (Hiss). All rights reserved.</div>
-  </footer>
-  <a class="floating-chat" href="https://zalo.me/0332311703" target="_blank">💬 Chat Zalo</a>
-
-  <script>
-    const projectImages = {
-      skilllink: [
-        'Đã làm_Skillink/1787320949000_2158756089354811450_7808540719867896210_c59cfc09494712649eeeb501958c204a.jpg',
-        'Đã làm_Skillink/1787320962522_2158756089354811450_7808540719867896210_ac7bca694166a4f2af80492456b4d213.jpg',
-        'Đã làm_Skillink/1787320971731_2158756089354811450_7808540719867896210_191c9d4e5d8173f5657fb4e2a491b80e.jpg',
-        'Đã làm_Skillink/1787320982530_2158756089354811450_7808540719867896210_1e70cce015ae167b85853459a1d1c0ce.jpg',
-        'Đã làm_Skillink/1787320991238_2158756089354811450_7808540719867896210_28cd0fbcda167c36de980f6508bd2f22.jpg',
-        'Đã làm_Skillink/1787321001717_2158756089354811450_7808540719867896210_724e62a63000e34444467e3779d0363f.jpg',
-        'Đã làm_Skillink/1787321028163_2158756089354811450_7808540719867896210_7277c5a59e0890c90d07088640f29d82.jpg',
-        'Đã làm_Skillink/1787321037372_2158756089354811450_7808540719867896210_36ae2116a24a660e4921795c80bcf045.jpg'
-      ],
-      marathon: [
-        'Đã làm_Marathon/1787321111486_2158756089354811450_7808540719867896210_90d430a9c53915f287151cdac37c3e85.jpg',
-        'Đã làm_Marathon/1787321124818_2158756089354811450_7808540719867896210_4f10c9e677f5036ddec3094aa389a823.jpg',
-        'Đã làm_Marathon/1787321133236_2158756089354811450_7808540719867896210_317d0452ec61a3001a3be1f40f1cde6e.jpg',
-        'Đã làm_Marathon/1787321146125_2158756089354811450_7808540719867896210_50392e2d414c948602c83e0d70f596c2.jpg',
-        'Đã làm_Marathon/1787321157324_2158756089354811450_7808540719867896210_4bf4fab418f9148c581d343af1272796.jpg',
-        'Đã làm_Marathon/1787321172410_2158756089354811450_7808540719867896210_8af6c736ebd71caa6f717b4c9dec2fac.jpg'
-      ],
-      job: [
-        'Đã Làm_Job/1787320808940_2158756089354811450_7808540719867896210_02cd3e945973f301ac690c28e4181218.jpg',
-        'Đã Làm_Job/1787320819719_2158756089354811450_7808540719867896210_04df3051a5f189cdc788394fc2454c12.jpg',
-        'Đã Làm_Job/1787320829132_2158756089354811450_7808540719867896210_992bc23093db62c2e2c46352debb72e2.jpg',
-        'Đã Làm_Job/1787320836804_2158756089354811450_7808540719867896210_af9209ae622d3aaf9464a3e8e649e184.jpg',
-        'Đã Làm_Job/1787320848817_2158756089354811450_7808540719867896210_e5db5e2956cbf55f6a36feca30327521.jpg'
-      ]
-    };
-
-    document.querySelectorAll('.project-gallery').forEach((gallery) => {
-      const images = projectImages[gallery.dataset.project];
-      const track = document.createElement('div');
-      const imageSet = document.createElement('div');
-      track.className = 'project-gallery-track';
-      imageSet.className = 'project-gallery-set';
-
-      images.forEach((source, index) => {
-        const image = document.createElement('img');
-        image.src = source;
-        image.alt = `Ảnh giao diện ${gallery.getAttribute('aria-label').replace('Hình ảnh dự án ', '')} ${index + 1}`;
-        image.loading = 'lazy';
-        image.decoding = 'async';
-        imageSet.appendChild(image);
-      });
-
-      const repeatedSet = imageSet.cloneNode(true);
-      repeatedSet.setAttribute('aria-hidden', 'true');
-      repeatedSet.querySelectorAll('img').forEach((image) => image.alt = '');
-      track.append(imageSet, repeatedSet);
-      gallery.appendChild(track);
-    });
-
-    const elements = document.querySelectorAll('.fade-in');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {
-      threshold: 0.25,
-    });
-
-    elements.forEach((element, index) => {
-      element.style.transitionDelay = `${index * 80}ms`;
-      observer.observe(element);
-    });
-
-    const topbar = document.querySelector('.topbar');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 40) {
-        topbar.classList.add('scrolled');
-      } else {
-        topbar.classList.remove('scrolled');
-      }
-    });
-
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-
-    const closeMenu = () => {
-      navLinks.classList.remove('open');
-      menuToggle.setAttribute('aria-expanded', 'false');
-      menuToggle.setAttribute('aria-label', 'Mở menu');
-    };
-
-    menuToggle.addEventListener('click', () => {
-      const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
-      navLinks.classList.toggle('open', !isOpen);
-      menuToggle.setAttribute('aria-expanded', String(!isOpen));
-      menuToggle.setAttribute('aria-label', isOpen ? 'Mở menu' : 'Đóng menu');
-    });
-
-    navLinks.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
-    document.addEventListener('click', (event) => {
-      if (!event.target.closest('nav')) closeMenu();
-    });
-    window.addEventListener('resize', () => {
-      if (window.innerWidth > 720) closeMenu();
-    });
-  </script>
+document.querySelectorAll('.gallery').forEach(gallery => {
+ const controls=gallery.previousElementSibling, buttons=controls.querySelectorAll('button'), status=controls.querySelector('.gallery-status');
+ const update=()=>{ const index=Math.max(0,Math.min(gallery.children.length-1,Math.round(gallery.scrollLeft/(gallery.clientWidth+16)))); status.textContent=`${index+1} / ${gallery.children.length}`; buttons[0].disabled=index===0; buttons[1].disabled=index===gallery.children.length-1; };
+ buttons.forEach(button=>button.addEventListener('click',()=>gallery.scrollBy({left:Number(button.dataset.direction)*(gallery.clientWidth+16),behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'})));
+ gallery.addEventListener('scroll',update,{passive:true}); gallery.closest('details').addEventListener('toggle',update); window.addEventListener('resize',update); controls.hidden=false; update();
+});
+</script>
 </body>
 </html>
